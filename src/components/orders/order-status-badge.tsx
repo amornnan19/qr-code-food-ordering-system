@@ -1,12 +1,6 @@
 import { OrderStatus } from "@/types/database";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Clock, 
-  ChefHat, 
-  CheckCircle, 
-  Utensils, 
-  XCircle 
-} from "lucide-react";
+import { Clock, ChefHat, CheckCircle, Utensils, XCircle } from "lucide-react";
 
 interface OrderStatusBadgeProps {
   status: OrderStatus;
@@ -57,7 +51,10 @@ export function OrderStatusBadge({ status, className }: OrderStatusBadgeProps) {
   const Icon = config.icon;
 
   return (
-    <Badge variant={config.variant} className={`${className} flex items-center space-x-1`}>
+    <Badge
+      variant={config.variant}
+      className={`${className} flex items-center space-x-1`}
+    >
       <Icon className={`h-3 w-3 ${config.color}`} />
       <span>{config.label}</span>
     </Badge>

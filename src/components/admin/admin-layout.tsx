@@ -5,15 +5,15 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { 
-  LayoutDashboard, 
-  Menu as MenuIcon, 
-  Settings, 
+import {
+  LayoutDashboard,
+  Menu as MenuIcon,
+  Settings,
   LogOut,
   Users,
   ChefHat,
   BarChart3,
-  QrCode
+  QrCode,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -69,19 +69,21 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       <div className="flex h-16 items-center border-b px-6">
         <h2 className="text-lg font-semibold">Admin Panel</h2>
       </div>
-      
+
       <nav className="flex-1 space-y-2 p-4">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
-          
+
           return (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent",
-                isActive ? "bg-accent text-accent-foreground" : "text-muted-foreground"
+                isActive
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground",
               )}
               onClick={() => setSidebarOpen(false)}
             >
@@ -91,7 +93,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           );
         })}
       </nav>
-      
+
       <div className="border-t p-4">
         <Button
           variant="ghost"
@@ -127,9 +129,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 p-6">
-            {children}
-          </main>
+          <main className="flex-1 p-6">{children}</main>
         </div>
 
         <SheetContent side="left" className="w-64 p-0">
@@ -139,9 +139,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Desktop Content */}
       <div className="hidden lg:flex lg:flex-1 lg:flex-col">
-        <main className="flex-1 p-6">
-          {children}
-        </main>
+        <main className="flex-1 p-6">{children}</main>
       </div>
     </div>
   );

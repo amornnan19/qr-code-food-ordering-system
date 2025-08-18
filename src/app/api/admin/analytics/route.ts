@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
 
 function verifyAdminToken(authHeader: string | null) {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -19,20 +20,20 @@ export async function GET(request: NextRequest) {
     verifyAdminToken(authHeader);
 
     const { searchParams } = new URL(request.url);
-    const range = searchParams.get('range') || '7d';
+    const range = searchParams.get("range") || "7d";
 
     // Calculate date range
     const endDate = new Date();
     const startDate = new Date();
-    
+
     switch (range) {
-      case '7d':
+      case "7d":
         startDate.setDate(startDate.getDate() - 7);
         break;
-      case '30d':
+      case "30d":
         startDate.setDate(startDate.getDate() - 30);
         break;
-      case '90d':
+      case "90d":
         startDate.setDate(startDate.getDate() - 90);
         break;
     }
@@ -70,8 +71,8 @@ export async function GET(request: NextRequest) {
     // Calculate summary stats
     const totalRevenue = orders.reduce((sum, order) => {
       const orderTotal = order.orderItems.reduce(
-        (itemSum, item) => itemSum + (item.quantity * Number(item.menu.price)),
-        0
+        (itemSum, item) => itemSum + item.quantity * Number(item.menu.price),
+        0,
       );
       return sum + orderTotal;
     }, 0);
@@ -80,15 +81,18 @@ export async function GET(request: NextRequest) {
     const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
     // Calculate daily sales
-    const dailySalesMap = new Map<string, { revenue: number; orders: number }>();
-    
-    orders.forEach(order => {
-      const date = order.createdAt.toISOString().split('T')[0];
+    const dailySalesMap = new Map<
+      string,
+      { revenue: number; orders: number }
+    >();
+
+    orders.forEach((order) => {
+      const date = order.createdAt.toISOString().split("T")[0];
       const orderTotal = order.orderItems.reduce(
-        (sum, item) => sum + (item.quantity * Number(item.menu.price)),
-        0
+        (sum, item) => sum + item.quantity * Number(item.menu.price),
+        0,
       );
-      
+
       if (dailySalesMap.has(date)) {
         const existing = dailySalesMap.get(date)!;
         dailySalesMap.set(date, {
@@ -112,19 +116,22 @@ export async function GET(request: NextRequest) {
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     // Calculate popular items
-    const menuItemsMap = new Map<string, {
-      id: string;
-      name: string;
-      category: string;
-      totalOrdered: number;
-      revenue: number;
-    }>();
+    const menuItemsMap = new Map<
+      string,
+      {
+        id: string;
+        name: string;
+        category: string;
+        totalOrdered: number;
+        revenue: number;
+      }
+    >();
 
-    orders.forEach(order => {
-      order.orderItems.forEach(item => {
+    orders.forEach((order) => {
+      order.orderItems.forEach((item) => {
         const key = item.menuId;
         const revenue = item.quantity * Number(item.menu.price);
-        
+
         if (menuItemsMap.has(key)) {
           const existing = menuItemsMap.get(key)!;
           menuItemsMap.set(key, {
@@ -144,17 +151,18 @@ export async function GET(request: NextRequest) {
       });
     });
 
-    const popularItems = Array.from(menuItemsMap.values())
-      .sort((a, b) => b.totalOrdered - a.totalOrdered);
+    const popularItems = Array.from(menuItemsMap.values()).sort(
+      (a, b) => b.totalOrdered - a.totalOrdered,
+    );
 
     // Calculate hourly data
     const hourlyData: { hour: number; orders: number }[] = [];
     for (let hour = 0; hour < 24; hour++) {
-      const orderCount = orders.filter(order => {
+      const orderCount = orders.filter((order) => {
         const orderHour = order.createdAt.getHours();
         return orderHour === hour;
       }).length;
-      
+
       hourlyData.push({ hour, orders: orderCount });
     }
 
@@ -175,7 +183,7 @@ export async function GET(request: NextRequest) {
     console.error("Analytics API error:", error);
     return NextResponse.json(
       { error: "Unauthorized or internal server error" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 }

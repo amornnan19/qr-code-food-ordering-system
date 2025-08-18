@@ -15,7 +15,15 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trash2, Minus, Plus, ShoppingCart, Users, Eye, Calculator } from "lucide-react";
+import {
+  Trash2,
+  Minus,
+  Plus,
+  ShoppingCart,
+  Users,
+  Eye,
+  Calculator,
+} from "lucide-react";
 import Link from "next/link";
 
 interface CartSummaryProps {
@@ -24,7 +32,11 @@ interface CartSummaryProps {
   tableId: string;
 }
 
-export function CartSummary({ children, restaurantId, tableId }: CartSummaryProps) {
+export function CartSummary({
+  children,
+  restaurantId,
+  tableId,
+}: CartSummaryProps) {
   const {
     cart,
     removeFromCart,
@@ -55,7 +67,7 @@ export function CartSummary({ children, restaurantId, tableId }: CartSummaryProp
     setIsSubmitting(true);
     try {
       const result = await submitOrder(restaurantId, tableId);
-      
+
       if (result.success) {
         alert("Order submitted successfully!");
         setIsOpen(false);
@@ -227,15 +239,15 @@ export function CartSummary({ children, restaurantId, tableId }: CartSummaryProp
 
           {/* Action Buttons */}
           <div className="space-y-2">
-            <Button 
+            <Button
               onClick={handlePlaceOrder}
               disabled={isSubmitting}
-              className="w-full" 
+              className="w-full"
               size="lg"
             >
               {isSubmitting ? "Placing Order..." : "Place Order"}
             </Button>
-            
+
             <div className="grid grid-cols-2 gap-2">
               <Button asChild variant="outline" size="sm">
                 <Link href={`/table/${tableId}/orders`}>
@@ -250,7 +262,7 @@ export function CartSummary({ children, restaurantId, tableId }: CartSummaryProp
                 </Link>
               </Button>
             </div>
-            
+
             <Button
               variant="outline"
               onClick={clearCart}

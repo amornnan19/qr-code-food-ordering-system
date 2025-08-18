@@ -3,7 +3,8 @@ import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 import { OrderStatus } from "@/types/database";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
 
 function verifyAdminToken(authHeader: string | null) {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -26,7 +27,7 @@ const VALID_STATUS_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
 // PUT - Update order status
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ orderId: string }> }
+  { params }: { params: Promise<{ orderId: string }> },
 ) {
   try {
     const authHeader = request.headers.get("authorization");
@@ -38,7 +39,7 @@ export async function PUT(
     if (!status) {
       return NextResponse.json(
         { error: "Status is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -48,10 +49,7 @@ export async function PUT(
     });
 
     if (!existingOrder) {
-      return NextResponse.json(
-        { error: "Order not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
     // Validate status transition
@@ -62,7 +60,7 @@ export async function PUT(
     if (!allowedTransitions.includes(newStatus)) {
       return NextResponse.json(
         { error: `Cannot change status from ${currentStatus} to ${newStatus}` },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -84,7 +82,7 @@ export async function PUT(
     console.error("Order update error:", error);
     return NextResponse.json(
       { error: "Failed to update order status" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -92,7 +90,7 @@ export async function PUT(
 // GET - Get single order with details
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ orderId: string }> }
+  { params }: { params: Promise<{ orderId: string }> },
 ) {
   try {
     const authHeader = request.headers.get("authorization");
@@ -113,10 +111,7 @@ export async function GET(
     });
 
     if (!order) {
-      return NextResponse.json(
-        { error: "Order not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
     return NextResponse.json(order);
@@ -124,7 +119,7 @@ export async function GET(
     console.error("Order fetch error:", error);
     return NextResponse.json(
       { error: "Unauthorized or internal server error" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 }

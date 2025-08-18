@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -15,13 +15,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { OrderStatusBadge } from "@/components/orders/order-status-badge";
-import { 
-  Clock, 
-  Search, 
+import {
+  Clock,
+  Search,
   Filter,
   RefreshCw,
   Users,
-  DollarSign
+  DollarSign,
 } from "lucide-react";
 import { Order, OrderItem, Menu, Table } from "@/types/database";
 
@@ -84,15 +84,18 @@ export default function AdminOrdersPage() {
 
     // Filter by status
     if (statusFilter !== "all") {
-      filtered = filtered.filter(order => order.status === statusFilter);
+      filtered = filtered.filter((order) => order.status === statusFilter);
     }
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(order => 
-        order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.table.tableNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.customerName?.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        (order) =>
+          order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.table.tableNumber
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          order.customerName?.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
@@ -106,7 +109,7 @@ export default function AdminOrdersPage() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ status: newStatus }),
       });
@@ -121,16 +124,16 @@ export default function AdminOrdersPage() {
 
   const getOrderTotal = (order: OrderWithDetails) => {
     return order.orderItems.reduce(
-      (sum, item) => sum + (item.quantity * Number(item.menu.price)),
-      0
+      (sum, item) => sum + item.quantity * Number(item.menu.price),
+      0,
     );
   };
 
-  const activeOrders = orders.filter(order => 
-    !["SERVED", "CANCELLED"].includes(order.status)
+  const activeOrders = orders.filter(
+    (order) => !["SERVED", "CANCELLED"].includes(order.status),
   );
   const todayRevenue = orders
-    .filter(order => {
+    .filter((order) => {
       const today = new Date();
       const orderDate = new Date(order.createdAt);
       return orderDate.toDateString() === today.toDateString();
@@ -164,12 +167,14 @@ export default function AdminOrdersPage() {
                 Monitor and manage all restaurant orders
               </p>
             </div>
-            <Button 
-              onClick={refreshOrders} 
+            <Button
+              onClick={refreshOrders}
               disabled={isRefreshing}
               variant="outline"
             >
-              <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`mr-2 h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+              />
               Refresh
             </Button>
           </div>
@@ -184,7 +189,9 @@ export default function AdminOrdersPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-orange-600">{activeOrders.length}</div>
+                <div className="text-2xl font-bold text-orange-600">
+                  {activeOrders.length}
+                </div>
                 <p className="text-xs text-muted-foreground">
                   Orders in progress
                 </p>
@@ -199,11 +206,15 @@ export default function AdminOrdersPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{orders.filter(order => {
-                  const today = new Date();
-                  const orderDate = new Date(order.createdAt);
-                  return orderDate.toDateString() === today.toDateString();
-                }).length}</div>
+                <div className="text-2xl font-bold">
+                  {
+                    orders.filter((order) => {
+                      const today = new Date();
+                      const orderDate = new Date(order.createdAt);
+                      return orderDate.toDateString() === today.toDateString();
+                    }).length
+                  }
+                </div>
                 <p className="text-xs text-muted-foreground">
                   All orders received today
                 </p>
@@ -241,7 +252,7 @@ export default function AdminOrdersPage() {
                     className="pl-10"
                   />
                 </div>
-                
+
                 <div className="relative">
                   <Filter className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -265,13 +276,16 @@ export default function AdminOrdersPage() {
           <div className="space-y-4">
             {filteredOrders.map((order) => {
               const orderTotal = getOrderTotal(order);
-              const orderTime = new Date(order.createdAt).toLocaleString('th-TH', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              });
+              const orderTime = new Date(order.createdAt).toLocaleString(
+                "th-TH",
+                {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                },
+              );
 
               return (
                 <Card key={order.id} className="overflow-hidden">
@@ -288,19 +302,24 @@ export default function AdminOrdersPage() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-lg font-bold">฿{orderTotal.toFixed(2)}</p>
+                        <p className="text-lg font-bold">
+                          ฿{orderTotal.toFixed(2)}
+                        </p>
                         <p className="text-sm text-muted-foreground">
                           {order.orderItems.length} items
                         </p>
                       </div>
                     </div>
                   </CardHeader>
-                  
+
                   <CardContent className="space-y-4">
                     {/* Order Items */}
                     <div className="space-y-2">
                       {order.orderItems.map((item) => (
-                        <div key={item.id} className="flex justify-between text-sm">
+                        <div
+                          key={item.id}
+                          className="flex justify-between text-sm"
+                        >
                           <span>
                             {item.menu.name} x{item.quantity}
                             {item.notes && (
@@ -309,7 +328,12 @@ export default function AdminOrdersPage() {
                               </span>
                             )}
                           </span>
-                          <span>฿{(Number(item.menu.price) * item.quantity).toFixed(2)}</span>
+                          <span>
+                            ฿
+                            {(Number(item.menu.price) * item.quantity).toFixed(
+                              2,
+                            )}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -320,7 +344,9 @@ export default function AdminOrdersPage() {
                         {order.status === "PENDING" && (
                           <Button
                             size="sm"
-                            onClick={() => updateOrderStatus(order.id, "CONFIRMED")}
+                            onClick={() =>
+                              updateOrderStatus(order.id, "CONFIRMED")
+                            }
                           >
                             Confirm Order
                           </Button>
@@ -328,7 +354,9 @@ export default function AdminOrdersPage() {
                         {order.status === "CONFIRMED" && (
                           <Button
                             size="sm"
-                            onClick={() => updateOrderStatus(order.id, "PREPARING")}
+                            onClick={() =>
+                              updateOrderStatus(order.id, "PREPARING")
+                            }
                           >
                             Start Preparing
                           </Button>
@@ -344,7 +372,9 @@ export default function AdminOrdersPage() {
                         {order.status === "READY" && (
                           <Button
                             size="sm"
-                            onClick={() => updateOrderStatus(order.id, "SERVED")}
+                            onClick={() =>
+                              updateOrderStatus(order.id, "SERVED")
+                            }
                           >
                             Mark Served
                           </Button>
@@ -352,7 +382,9 @@ export default function AdminOrdersPage() {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => updateOrderStatus(order.id, "CANCELLED")}
+                          onClick={() =>
+                            updateOrderStatus(order.id, "CANCELLED")
+                          }
                           className="text-red-600 hover:text-red-700"
                         >
                           Cancel
@@ -372,8 +404,7 @@ export default function AdminOrdersPage() {
                   <p className="text-sm text-muted-foreground">
                     {searchTerm || statusFilter !== "all"
                       ? "Try adjusting your search or filters"
-                      : "Orders will appear here as customers place them"
-                    }
+                      : "Orders will appear here as customers place them"}
                   </p>
                 </CardContent>
               </Card>

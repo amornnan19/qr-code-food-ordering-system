@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
 
 function verifyAdminToken(authHeader: string | null) {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -54,8 +55,8 @@ export async function GET(request: NextRequest) {
     const totalOrders = todayOrders.length;
     const totalRevenue = todayOrders.reduce((sum, order) => {
       const orderTotal = order.orderItems.reduce(
-        (itemSum, item) => itemSum + (item.quantity * Number(item.menu.price)),
-        0
+        (itemSum, item) => itemSum + item.quantity * Number(item.menu.price),
+        0,
       );
       return sum + orderTotal;
     }, 0);
@@ -72,7 +73,7 @@ export async function GET(request: NextRequest) {
     console.error("Stats API error:", error);
     return NextResponse.json(
       { error: "Unauthorized or internal server error" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 }

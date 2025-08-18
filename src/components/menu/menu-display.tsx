@@ -17,7 +17,11 @@ interface MenuDisplayProps {
   tableId: string;
 }
 
-export function MenuDisplay({ categories, restaurantId, tableId }: MenuDisplayProps) {
+export function MenuDisplay({
+  categories,
+  restaurantId,
+  tableId,
+}: MenuDisplayProps) {
   const { getCartSummary } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>(

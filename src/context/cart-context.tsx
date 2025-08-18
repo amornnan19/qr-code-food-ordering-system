@@ -151,7 +151,10 @@ export function CartProvider({ children }: CartProviderProps) {
         const data = await response.json();
 
         if (!response.ok) {
-          return { success: false, error: data.error || "Failed to submit order" };
+          return {
+            success: false,
+            error: data.error || "Failed to submit order",
+          };
         }
 
         // Clear cart after successful order

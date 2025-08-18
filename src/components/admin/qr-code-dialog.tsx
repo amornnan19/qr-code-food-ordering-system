@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -33,9 +38,9 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
       const response = await fetch("/api/qr/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           text: tableUrl,
-          size: 400 
+          size: 400,
         }),
       });
 
@@ -66,7 +71,7 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
     if (!table) return;
 
     const tableUrl = `${window.location.origin}/table/${table.id}`;
-    
+
     if (navigator.share) {
       try {
         await navigator.share({
@@ -87,11 +92,14 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
     if (!table) return;
 
     const tableUrl = `${window.location.origin}/table/${table.id}`;
-    navigator.clipboard.writeText(tableUrl).then(() => {
-      alert("Table URL copied to clipboard!");
-    }).catch(() => {
-      alert("Failed to copy URL");
-    });
+    navigator.clipboard
+      .writeText(tableUrl)
+      .then(() => {
+        alert("Table URL copied to clipboard!");
+      })
+      .catch(() => {
+        alert("Failed to copy URL");
+      });
   };
 
   const openTable = () => {
@@ -123,7 +131,9 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
               {isLoading ? (
                 <div className="text-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                  <p className="text-sm text-muted-foreground">Generating QR code...</p>
+                  <p className="text-sm text-muted-foreground">
+                    Generating QR code...
+                  </p>
                 </div>
               ) : qrCodeUrl ? (
                 <img
@@ -149,11 +159,17 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
 
           {/* Table Info */}
           <div className="text-sm space-y-1">
-            <p><strong>Table:</strong> {table.tableNumber}</p>
+            <p>
+              <strong>Table:</strong> {table.tableNumber}
+            </p>
             {table.location && (
-              <p><strong>Location:</strong> {table.location}</p>
+              <p>
+                <strong>Location:</strong> {table.location}
+              </p>
             )}
-            <p><strong>URL:</strong></p>
+            <p>
+              <strong>URL:</strong>
+            </p>
             <p className="text-xs text-muted-foreground break-all font-mono bg-gray-50 p-2 rounded">
               {tableUrl}
             </p>
@@ -170,27 +186,15 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
               <Download className="mr-2 h-4 w-4" />
               Download
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={shareQR}
-            >
+            <Button variant="outline" size="sm" onClick={shareQR}>
               <Share className="mr-2 h-4 w-4" />
               Share
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={copyURL}
-            >
+            <Button variant="outline" size="sm" onClick={copyURL}>
               <Copy className="mr-2 h-4 w-4" />
               Copy URL
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={openTable}
-            >
+            <Button variant="outline" size="sm" onClick={openTable}>
               <ExternalLink className="mr-2 h-4 w-4" />
               Open
             </Button>

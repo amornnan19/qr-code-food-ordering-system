@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
 
 function verifyAdminToken(authHeader: string | null) {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -30,7 +31,7 @@ export async function GET(request: NextRequest) {
     console.error("Categories fetch error:", error);
     return NextResponse.json(
       { error: "Unauthorized or internal server error" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 }

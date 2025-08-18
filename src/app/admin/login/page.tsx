@@ -65,7 +65,7 @@ export default function AdminLoginPage() {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-            
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -77,7 +77,7 @@ export default function AdminLoginPage() {
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -89,20 +89,18 @@ export default function AdminLoginPage() {
                 required
               />
             </div>
-            
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={isLoading}
-            >
+
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
           </form>
-          
+
           <div className="mt-6 p-4 bg-blue-50 rounded-lg">
             <p className="text-sm text-blue-700">
-              <strong>Demo Credentials:</strong><br />
-              Email: admin@restaurant.com<br />
+              <strong>Demo Credentials:</strong>
+              <br />
+              Email: admin@restaurant.com
+              <br />
               Password: admin123
             </p>
           </div>

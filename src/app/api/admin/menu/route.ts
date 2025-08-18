@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
 
 function verifyAdminToken(authHeader: string | null) {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -33,7 +34,7 @@ export async function GET(request: NextRequest) {
     console.error("Menu fetch error:", error);
     return NextResponse.json(
       { error: "Unauthorized or internal server error" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 }
@@ -44,12 +45,13 @@ export async function POST(request: NextRequest) {
     const authHeader = request.headers.get("authorization");
     verifyAdminToken(authHeader);
 
-    const { name, description, price, categoryId, imageUrl, isAvailable } = await request.json();
+    const { name, description, price, categoryId, imageUrl, isAvailable } =
+      await request.json();
 
     if (!name || !price || !categoryId) {
       return NextResponse.json(
         { error: "Name, price, and category are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -59,10 +61,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!category) {
-      return NextResponse.json(
-        { error: "Invalid category" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid category" }, { status: 400 });
     }
 
     const menuItem = await prisma.menu.create({
@@ -84,7 +83,7 @@ export async function POST(request: NextRequest) {
     console.error("Menu create error:", error);
     return NextResponse.json(
       { error: "Failed to create menu item" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

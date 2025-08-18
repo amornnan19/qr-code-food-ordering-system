@@ -10,17 +10,19 @@ interface TableOrdersPageProps {
   params: Promise<{ tableId: string }>;
 }
 
-export default async function TableOrdersPage({ params }: TableOrdersPageProps) {
+export default async function TableOrdersPage({
+  params,
+}: TableOrdersPageProps) {
   const { tableId } = await params;
 
   // Get table with restaurant data
   const table = await prisma.table.findUnique({
-    where: { 
+    where: {
       id: tableId,
-      isActive: true 
+      isActive: true,
     },
-    include: { 
-      restaurant: true 
+    include: {
+      restaurant: true,
     },
   });
 
@@ -29,10 +31,7 @@ export default async function TableOrdersPage({ params }: TableOrdersPageProps) 
   }
 
   return (
-    <MainLayout 
-      restaurant={table.restaurant} 
-      tableNumber={table.tableNumber}
-    >
+    <MainLayout restaurant={table.restaurant} tableNumber={table.tableNumber}>
       <div className="space-y-6">
         <div className="flex items-center space-x-4">
           <Button asChild variant="outline" size="sm">
@@ -43,7 +42,7 @@ export default async function TableOrdersPage({ params }: TableOrdersPageProps) 
           </Button>
         </div>
 
-        <OrdersList 
+        <OrdersList
           restaurantId={table.restaurant.id}
           tableId={tableId}
           showControls={false} // Customers can't control status

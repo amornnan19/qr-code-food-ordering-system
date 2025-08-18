@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
 
 function verifyAdminToken(authHeader: string | null) {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -30,7 +31,7 @@ export async function GET(request: NextRequest) {
     console.error("Tables fetch error:", error);
     return NextResponse.json(
       { error: "Unauthorized or internal server error" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 }
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
     if (!tableNumber) {
       return NextResponse.json(
         { error: "Table number is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -58,7 +59,7 @@ export async function POST(request: NextRequest) {
     if (existingTable) {
       return NextResponse.json(
         { error: "Table number already exists" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
     if (!restaurant) {
       return NextResponse.json(
         { error: "No restaurant found. Please set up a restaurant first." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -86,7 +87,7 @@ export async function POST(request: NextRequest) {
     console.error("Table create error:", error);
     return NextResponse.json(
       { error: "Failed to create table" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

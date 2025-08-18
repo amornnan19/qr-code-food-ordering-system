@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -25,10 +25,12 @@ interface BillSplittingProps {
 export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
   const { getCartSummary } = useCart();
   const cartSummary = getCartSummary();
-  
+
   // Manual adjustments state
   const [adjustments, setAdjustments] = useState<Record<string, number>>({});
-  const [splitMethod, setSplitMethod] = useState<"auto" | "manual" | "equal">("auto");
+  const [splitMethod, setSplitMethod] = useState<"auto" | "manual" | "equal">(
+    "auto",
+  );
 
   if (cartSummary.totalItems === 0) {
     return (
@@ -44,7 +46,7 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
   const getCustomerTotal = (customerName: string): number => {
     const baseTotal = cartSummary.customerGroups[customerName].reduce(
       (sum, item) => sum + item.quantity * Number(item.menu.price),
-      0
+      0,
     );
     const adjustment = adjustments[customerName] || 0;
     return Math.max(0, baseTotal + adjustment);
@@ -62,9 +64,9 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
   };
 
   const addAdjustment = (customerName: string, amount: number) => {
-    setAdjustments(prev => ({
+    setAdjustments((prev) => ({
       ...prev,
-      [customerName]: (prev[customerName] || 0) + amount
+      [customerName]: (prev[customerName] || 0) + amount,
     }));
   };
 
@@ -80,8 +82,13 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
           แยกบิล
         </h3>
         <div className="flex items-center space-x-2">
-          <Label htmlFor="split-method" className="text-sm">วิธีแยก:</Label>
-          <Select value={splitMethod} onValueChange={(value: any) => setSplitMethod(value)}>
+          <Label htmlFor="split-method" className="text-sm">
+            วิธีแยก:
+          </Label>
+          <Select
+            value={splitMethod}
+            onValueChange={(value: any) => setSplitMethod(value)}
+          >
             <SelectTrigger className="w-32" id="split-method">
               <SelectValue />
             </SelectTrigger>
@@ -106,16 +113,18 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center justify-between">
                     {customerName}
-                    <Badge variant="outline">
-                      ฿{customerTotal.toFixed(2)}
-                    </Badge>
+                    <Badge variant="outline">฿{customerTotal.toFixed(2)}</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   {customerItems.map((item) => (
                     <div key={item.id} className="flex justify-between text-sm">
-                      <span>{item.menu.name} x{item.quantity}</span>
-                      <span>฿{(item.quantity * Number(item.menu.price)).toFixed(2)}</span>
+                      <span>
+                        {item.menu.name} x{item.quantity}
+                      </span>
+                      <span>
+                        ฿{(item.quantity * Number(item.menu.price)).toFixed(2)}
+                      </span>
                     </div>
                   ))}
                 </CardContent>
@@ -132,7 +141,7 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
             {customerNames.map((customerName) => {
               const baseTotal = cartSummary.customerGroups[customerName].reduce(
                 (sum, item) => sum + item.quantity * Number(item.menu.price),
-                0
+                0,
               );
               const adjustment = adjustments[customerName] || 0;
               const finalTotal = getCustomerTotal(customerName);
@@ -151,7 +160,11 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
                       {adjustment !== 0 && (
                         <div className="flex justify-between">
                           <span>ปรับเพิ่ม/ลด:</span>
-                          <span className={adjustment > 0 ? "text-red-600" : "text-green-600"}>
+                          <span
+                            className={
+                              adjustment > 0 ? "text-red-600" : "text-green-600"
+                            }
+                          >
                             {adjustment > 0 ? "+" : ""}฿{adjustment.toFixed(2)}
                           </span>
                         </div>
@@ -179,7 +192,7 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
                         +฿10
                       </Button>
                     </div>
-                    
+
                     <div className="flex space-x-2">
                       <Input
                         type="number"
@@ -187,9 +200,9 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
                         className="flex-1"
                         onChange={(e) => {
                           const amount = parseFloat(e.target.value) || 0;
-                          setAdjustments(prev => ({
+                          setAdjustments((prev) => ({
                             ...prev,
-                            [customerName]: amount
+                            [customerName]: amount,
                           }));
                         }}
                       />
@@ -199,7 +212,7 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
               );
             })}
           </div>
-          
+
           <div className="flex justify-center">
             <Button variant="outline" onClick={resetAdjustments}>
               <Calculator className="mr-2 h-4 w-4" />
@@ -240,12 +253,13 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
               <span>ยอดรวมต้นฉบับ:</span>
               <span>฿{cartSummary.totalAmount.toFixed(2)}</span>
             </div>
-            {splitMethod === "manual" && getTotalWithAdjustments() !== cartSummary.totalAmount && (
-              <div className="flex justify-between">
-                <span>ยอดหลังปรับแต่ง:</span>
-                <span>฿{getTotalWithAdjustments().toFixed(2)}</span>
-              </div>
-            )}
+            {splitMethod === "manual" &&
+              getTotalWithAdjustments() !== cartSummary.totalAmount && (
+                <div className="flex justify-between">
+                  <span>ยอดหลังปรับแต่ง:</span>
+                  <span>฿{getTotalWithAdjustments().toFixed(2)}</span>
+                </div>
+              )}
             <div className="flex justify-between text-sm text-muted-foreground">
               <span>จำนวนคน:</span>
               <span>{customerNames.length} คน</span>

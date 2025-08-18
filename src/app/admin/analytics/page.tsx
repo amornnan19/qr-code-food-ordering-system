@@ -5,14 +5,14 @@ import { AuthGuard } from "@/components/admin/auth-guard";
 import { AdminLayout } from "@/components/admin/admin-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  BarChart3, 
-  TrendingUp, 
-  DollarSign, 
+import {
+  BarChart3,
+  TrendingUp,
+  DollarSign,
   ShoppingBag,
   Users,
   Clock,
-  Medal
+  Medal,
 } from "lucide-react";
 
 interface AnalyticsData {
@@ -43,7 +43,7 @@ interface AnalyticsData {
 export default function AdminAnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('7d');
+  const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("7d");
 
   const fetchAnalytics = async () => {
     try {
@@ -87,7 +87,9 @@ export default function AdminAnalyticsPage() {
       <AuthGuard>
         <AdminLayout>
           <div className="text-center py-12">
-            <p className="text-muted-foreground">Failed to load analytics data</p>
+            <p className="text-muted-foreground">
+              Failed to load analytics data
+            </p>
           </div>
         </AdminLayout>
       </AuthGuard>
@@ -97,10 +99,14 @@ export default function AdminAnalyticsPage() {
   const formatCurrency = (amount: number) => `฿${amount.toLocaleString()}`;
   const getRangeLabel = (range: string) => {
     switch (range) {
-      case '7d': return 'Last 7 Days';
-      case '30d': return 'Last 30 Days';
-      case '90d': return 'Last 90 Days';
-      default: return range;
+      case "7d":
+        return "Last 7 Days";
+      case "30d":
+        return "Last 30 Days";
+      case "90d":
+        return "Last 90 Days";
+      default:
+        return range;
     }
   };
 
@@ -116,17 +122,17 @@ export default function AdminAnalyticsPage() {
                 Restaurant performance and insights
               </p>
             </div>
-            
+
             {/* Time Range Selector */}
             <div className="flex space-x-2">
-              {(['7d', '30d', '90d'] as const).map((range) => (
+              {(["7d", "30d", "90d"] as const).map((range) => (
                 <button
                   key={range}
                   onClick={() => setTimeRange(range)}
                   className={`px-3 py-1 rounded-md text-sm ${
                     timeRange === range
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
                   {getRangeLabel(range)}
@@ -218,14 +224,22 @@ export default function AdminAnalyticsPage() {
               <CardContent>
                 <div className="space-y-4">
                   {analytics.popularItems.slice(0, 10).map((item, index) => (
-                    <div key={item.id} className="flex items-center justify-between">
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between"
+                    >
                       <div className="flex items-center space-x-3">
-                        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                          index === 0 ? 'bg-yellow-500 text-white' :
-                          index === 1 ? 'bg-gray-400 text-white' :
-                          index === 2 ? 'bg-amber-600 text-white' :
-                          'bg-gray-100 text-gray-600'
-                        }`}>
+                        <div
+                          className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                            index === 0
+                              ? "bg-yellow-500 text-white"
+                              : index === 1
+                                ? "bg-gray-400 text-white"
+                                : index === 2
+                                  ? "bg-amber-600 text-white"
+                                  : "bg-gray-100 text-gray-600"
+                          }`}
+                        >
                           {index + 1}
                         </div>
                         <div>
@@ -242,12 +256,15 @@ export default function AdminAnalyticsPage() {
                       </div>
                     </div>
                   ))}
-                  
+
                   {analytics.popularItems.length === 0 && (
                     <div className="text-center py-8 text-muted-foreground">
                       <Medal className="mx-auto h-12 w-12 mb-4 opacity-50" />
                       <p>No orders yet</p>
-                      <p className="text-sm">Popular items will appear here once customers start ordering</p>
+                      <p className="text-sm">
+                        Popular items will appear here once customers start
+                        ordering
+                      </p>
                     </div>
                   )}
                 </div>
@@ -265,13 +282,19 @@ export default function AdminAnalyticsPage() {
               <CardContent>
                 <div className="space-y-4">
                   {analytics.dailySales.slice(0, 10).map((day, index) => {
-                    const date = new Date(day.date).toLocaleDateString('th-TH', {
-                      month: 'short',
-                      day: 'numeric'
-                    });
-                    
+                    const date = new Date(day.date).toLocaleDateString(
+                      "th-TH",
+                      {
+                        month: "short",
+                        day: "numeric",
+                      },
+                    );
+
                     return (
-                      <div key={day.date} className="flex items-center justify-between">
+                      <div
+                        key={day.date}
+                        className="flex items-center justify-between"
+                      >
                         <div>
                           <p className="font-medium">{date}</p>
                           <p className="text-sm text-muted-foreground">
@@ -286,12 +309,14 @@ export default function AdminAnalyticsPage() {
                       </div>
                     );
                   })}
-                  
+
                   {analytics.dailySales.length === 0 && (
                     <div className="text-center py-8 text-muted-foreground">
                       <TrendingUp className="mx-auto h-12 w-12 mb-4 opacity-50" />
                       <p>No sales data yet</p>
-                      <p className="text-sm">Daily sales will appear here once orders are placed</p>
+                      <p className="text-sm">
+                        Daily sales will appear here once orders are placed
+                      </p>
                     </div>
                   )}
                 </div>
@@ -310,13 +335,16 @@ export default function AdminAnalyticsPage() {
             <CardContent>
               <div className="grid grid-cols-12 gap-2">
                 {analytics.hourlyData.map((hour) => {
-                  const maxOrders = Math.max(...analytics.hourlyData.map(h => h.orders));
-                  const height = maxOrders > 0 ? (hour.orders / maxOrders) * 100 : 0;
-                  
+                  const maxOrders = Math.max(
+                    ...analytics.hourlyData.map((h) => h.orders),
+                  );
+                  const height =
+                    maxOrders > 0 ? (hour.orders / maxOrders) * 100 : 0;
+
                   return (
                     <div key={hour.hour} className="text-center">
                       <div className="relative h-20 mb-2">
-                        <div 
+                        <div
                           className="absolute bottom-0 w-full bg-primary rounded-t"
                           style={{ height: `${height}%` }}
                         />

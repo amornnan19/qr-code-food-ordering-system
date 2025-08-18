@@ -3,13 +3,13 @@
 import { AuthGuard } from "@/components/admin/auth-guard";
 import { AdminLayout } from "@/components/admin/admin-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  BarChart3, 
-  DollarSign, 
-  ShoppingBag, 
-  Users, 
+import {
+  BarChart3,
+  DollarSign,
+  ShoppingBag,
+  Users,
   TrendingUp,
-  Clock
+  Clock,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -35,10 +35,10 @@ export default function AdminDashboardPage() {
         const token = localStorage.getItem("adminAuth");
         const response = await fetch("/api/admin/stats", {
           headers: {
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-        
+
         if (response.ok) {
           const data = await response.json();
           setStats(data);

@@ -16,10 +16,10 @@ interface OrdersListProps {
   showControls?: boolean;
 }
 
-export function OrdersList({ 
-  restaurantId, 
-  tableId, 
-  showControls = false 
+export function OrdersList({
+  restaurantId,
+  tableId,
+  showControls = false,
 }: OrdersListProps) {
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,13 +29,13 @@ export function OrdersList({
   const fetchOrders = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const params = new URLSearchParams({ restaurantId });
       if (tableId) params.append("tableId", tableId);
 
       const response = await fetch(`/api/orders?${params}`);
-      
+
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
@@ -64,7 +64,9 @@ export function OrdersList({
       // Refresh orders list
       await fetchOrders();
     } catch (err) {
-      alert(`Failed to update order: ${err instanceof Error ? err.message : "Unknown error"}`);
+      alert(
+        `Failed to update order: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
     }
   };
 
@@ -75,12 +77,16 @@ export function OrdersList({
   const filterOrdersByStatus = (status: string) => {
     if (status === "all") return orders;
     if (status === "active") {
-      return orders.filter(order => 
-        [OrderStatus.PENDING, OrderStatus.CONFIRMED, OrderStatus.PREPARING, OrderStatus.READY]
-        .includes(order.status)
+      return orders.filter((order) =>
+        [
+          OrderStatus.PENDING,
+          OrderStatus.CONFIRMED,
+          OrderStatus.PREPARING,
+          OrderStatus.READY,
+        ].includes(order.status),
       );
     }
-    return orders.filter(order => order.status === status);
+    return orders.filter((order) => order.status === status);
   };
 
   const getTabCount = (status: string) => {
@@ -117,7 +123,12 @@ export function OrdersList({
       <Alert>
         <AlertDescription>
           Error loading orders: {error}
-          <Button onClick={fetchOrders} variant="outline" size="sm" className="ml-2">
+          <Button
+            onClick={fetchOrders}
+            variant="outline"
+            size="sm"
+            className="ml-2"
+          >
             Retry
           </Button>
         </AlertDescription>
@@ -129,7 +140,8 @@ export function OrdersList({
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">
-          Orders {tableId && `- Table ${orders[0]?.table.tableNumber || tableId}`}
+          Orders{" "}
+          {tableId && `- Table ${orders[0]?.table.tableNumber || tableId}`}
         </h2>
         <Button onClick={fetchOrders} variant="outline" size="sm">
           <RefreshCw className="h-4 w-4 mr-2" />
@@ -154,12 +166,18 @@ export function OrdersList({
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {filterOrdersByStatus(tab.value).length > 0 ? (
                 filterOrdersByStatus(tab.value)
-                  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                  .sort(
+                    (a, b) =>
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime(),
+                  )
                   .map((order) => (
                     <OrderCard
                       key={order.id}
                       order={order}
-                      onStatusUpdate={showControls ? updateOrderStatus : undefined}
+                      onStatusUpdate={
+                        showControls ? updateOrderStatus : undefined
+                      }
                       showControls={showControls}
                     />
                   ))

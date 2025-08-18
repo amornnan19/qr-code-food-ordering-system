@@ -1,12 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Menu, Category } from "@/types/database";
 
@@ -17,7 +28,12 @@ interface MenuDialogProps {
   editingItem?: Menu | null;
 }
 
-export function MenuDialog({ open, onClose, categories, editingItem }: MenuDialogProps) {
+export function MenuDialog({
+  open,
+  onClose,
+  categories,
+  editingItem,
+}: MenuDialogProps) {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -59,15 +75,15 @@ export function MenuDialog({ open, onClose, categories, editingItem }: MenuDialo
 
     try {
       const token = localStorage.getItem("adminAuth");
-      const url = editingItem 
-        ? `/api/admin/menu/${editingItem.id}` 
+      const url = editingItem
+        ? `/api/admin/menu/${editingItem.id}`
         : "/api/admin/menu";
-      
+
       const response = await fetch(url, {
         method: editingItem ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           ...formData,
@@ -89,7 +105,7 @@ export function MenuDialog({ open, onClose, categories, editingItem }: MenuDialo
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -137,8 +153,8 @@ export function MenuDialog({ open, onClose, categories, editingItem }: MenuDialo
 
           <div className="space-y-2">
             <Label htmlFor="category">Category *</Label>
-            <Select 
-              value={formData.categoryId} 
+            <Select
+              value={formData.categoryId}
               onValueChange={(value) => handleInputChange("categoryId", value)}
             >
               <SelectTrigger>
@@ -192,7 +208,9 @@ export function MenuDialog({ open, onClose, categories, editingItem }: MenuDialo
               type="checkbox"
               id="isAvailable"
               checked={formData.isAvailable}
-              onChange={(e) => handleInputChange("isAvailable", e.target.checked)}
+              onChange={(e) =>
+                handleInputChange("isAvailable", e.target.checked)
+              }
               className="rounded border-gray-300"
             />
             <Label htmlFor="isAvailable">Available for ordering</Label>

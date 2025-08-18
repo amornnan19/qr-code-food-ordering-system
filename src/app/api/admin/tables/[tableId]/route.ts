@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
 
 function verifyAdminToken(authHeader: string | null) {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -16,7 +17,7 @@ function verifyAdminToken(authHeader: string | null) {
 // PUT - Update table
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ tableId: string }> }
+  { params }: { params: Promise<{ tableId: string }> },
 ) {
   try {
     const authHeader = request.headers.get("authorization");
@@ -28,7 +29,7 @@ export async function PUT(
     if (!tableNumber) {
       return NextResponse.json(
         { error: "Table number is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -38,24 +39,21 @@ export async function PUT(
     });
 
     if (!existingTable) {
-      return NextResponse.json(
-        { error: "Table not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Table not found" }, { status: 404 });
     }
 
     // Check if table number is taken by another table
     const duplicateTable = await prisma.table.findFirst({
-      where: { 
+      where: {
         tableNumber,
-        id: { not: tableId }
+        id: { not: tableId },
       },
     });
 
     if (duplicateTable) {
       return NextResponse.json(
         { error: "Table number already exists" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -74,7 +72,7 @@ export async function PUT(
     console.error("Table update error:", error);
     return NextResponse.json(
       { error: "Failed to update table" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -82,7 +80,7 @@ export async function PUT(
 // DELETE - Delete table
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ tableId: string }> }
+  { params }: { params: Promise<{ tableId: string }> },
 ) {
   try {
     const authHeader = request.headers.get("authorization");
@@ -96,10 +94,7 @@ export async function DELETE(
     });
 
     if (!existingTable) {
-      return NextResponse.json(
-        { error: "Table not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Table not found" }, { status: 404 });
     }
 
     // Check if table has any orders
@@ -109,8 +104,11 @@ export async function DELETE(
 
     if (ordersCount > 0) {
       return NextResponse.json(
-        { error: "Cannot delete table that has orders. Consider deactivating it instead." },
-        { status: 400 }
+        {
+          error:
+            "Cannot delete table that has orders. Consider deactivating it instead.",
+        },
+        { status: 400 },
       );
     }
 
@@ -123,7 +121,7 @@ export async function DELETE(
     console.error("Table delete error:", error);
     return NextResponse.json(
       { error: "Failed to delete table" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

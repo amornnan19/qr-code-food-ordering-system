@@ -7,20 +7,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Plus, 
-  Search, 
-  Edit, 
-  Trash2, 
+import {
+  Plus,
+  Search,
+  Edit,
+  Trash2,
   Image as ImageIcon,
-  Filter
+  Filter,
 } from "lucide-react";
 import { Menu, Category } from "@/types/database";
 import { MenuDialog } from "@/components/admin/menu-dialog";
 import { DeleteConfirmDialog } from "@/components/admin/delete-confirm-dialog";
 
 export default function AdminMenuPage() {
-  const [menuItems, setMenuItems] = useState<(Menu & { category: Category })[]>([]);
+  const [menuItems, setMenuItems] = useState<(Menu & { category: Category })[]>(
+    [],
+  );
   const [categories, setCategories] = useState<Category[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -60,9 +62,11 @@ export default function AdminMenuPage() {
   }, []);
 
   const filteredMenuItems = menuItems.filter((item) => {
-    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || item.categoryId === selectedCategory;
+    const matchesSearch =
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "all" || item.categoryId === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -150,7 +154,7 @@ export default function AdminMenuPage() {
                     className="pl-10"
                   />
                 </div>
-                
+
                 <div className="relative">
                   <Filter className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <select
@@ -185,7 +189,7 @@ export default function AdminMenuPage() {
                     <ImageIcon className="h-12 w-12 text-gray-400" />
                   )}
                 </div>
-                
+
                 <CardContent className="p-4">
                   <div className="space-y-2">
                     <div className="flex items-start justify-between">
@@ -194,18 +198,18 @@ export default function AdminMenuPage() {
                         ฿{Number(item.price).toFixed(0)}
                       </Badge>
                     </div>
-                    
+
                     {item.description && (
                       <p className="text-sm text-muted-foreground line-clamp-2">
                         {item.description}
                       </p>
                     )}
-                    
+
                     <div className="flex items-center justify-between">
                       <Badge variant="secondary" className="text-xs">
                         {item.category.name}
                       </Badge>
-                      
+
                       <div className="flex space-x-2">
                         <Button
                           variant="outline"
@@ -236,10 +240,9 @@ export default function AdminMenuPage() {
                   <ImageIcon className="mx-auto h-12 w-12 mb-4" />
                   <p>No menu items found</p>
                   <p className="text-sm">
-                    {searchTerm || selectedCategory !== "all" 
+                    {searchTerm || selectedCategory !== "all"
                       ? "Try adjusting your search or filters"
-                      : "Add your first menu item to get started"
-                    }
+                      : "Add your first menu item to get started"}
                   </p>
                 </div>
               </CardContent>

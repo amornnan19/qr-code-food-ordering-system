@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -51,15 +56,15 @@ export function TableDialog({ open, onClose, editingTable }: TableDialogProps) {
 
     try {
       const token = localStorage.getItem("adminAuth");
-      const url = editingTable 
-        ? `/api/admin/tables/${editingTable.id}` 
+      const url = editingTable
+        ? `/api/admin/tables/${editingTable.id}`
         : "/api/admin/tables";
-      
+
       const response = await fetch(url, {
         method: editingTable ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
@@ -78,7 +83,7 @@ export function TableDialog({ open, onClose, editingTable }: TableDialogProps) {
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -137,7 +142,9 @@ export function TableDialog({ open, onClose, editingTable }: TableDialogProps) {
               onChange={(e) => handleInputChange("isActive", e.target.checked)}
               className="rounded border-gray-300"
             />
-            <Label htmlFor="isActive">Active (customers can order from this table)</Label>
+            <Label htmlFor="isActive">
+              Active (customers can order from this table)
+            </Label>
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">

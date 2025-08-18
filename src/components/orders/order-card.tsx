@@ -14,17 +14,17 @@ interface OrderCardProps {
   showControls?: boolean;
 }
 
-export function OrderCard({ 
-  order, 
-  onStatusUpdate, 
-  showControls = false 
+export function OrderCard({
+  order,
+  onStatusUpdate,
+  showControls = false,
 }: OrderCardProps) {
   const formatTime = (date: Date) => {
-    return new Intl.DateTimeFormat('th-TH', {
-      hour: '2-digit',
-      minute: '2-digit',
-      day: '2-digit',
-      month: '2-digit',
+    return new Intl.DateTimeFormat("th-TH", {
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "2-digit",
     }).format(new Date(date));
   };
 
@@ -64,9 +64,7 @@ export function OrderCard({
     <Card className="w-full">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">
-            {order.orderNumber}
-          </CardTitle>
+          <CardTitle className="text-lg">{order.orderNumber}</CardTitle>
           <div className="flex items-center space-x-2">
             <Badge variant="outline">Table {order.table.tableNumber}</Badge>
             <OrderStatusBadge status={order.status} />
@@ -84,7 +82,10 @@ export function OrderCard({
         <div className="space-y-2">
           <h4 className="font-medium text-sm">รายการอาหาร:</h4>
           {order.orderItems.map((item) => (
-            <div key={item.id} className="flex justify-between items-center bg-muted/30 rounded p-2">
+            <div
+              key={item.id}
+              className="flex justify-between items-center bg-muted/30 rounded p-2"
+            >
               <div className="flex-1">
                 <span className="font-medium">{item.menu.name}</span>
                 {item.notes && (
@@ -114,10 +115,13 @@ export function OrderCard({
         {/* Status Controls */}
         {showControls && onStatusUpdate && nextStatus && (
           <div className="pt-2">
-            <Button 
+            <Button
               onClick={() => onStatusUpdate(order.id, nextStatus)}
               className="w-full"
-              disabled={order.status === OrderStatus.SERVED || order.status === OrderStatus.CANCELLED}
+              disabled={
+                order.status === OrderStatus.SERVED ||
+                order.status === OrderStatus.CANCELLED
+              }
             >
               {getStatusLabel(nextStatus)}
             </Button>

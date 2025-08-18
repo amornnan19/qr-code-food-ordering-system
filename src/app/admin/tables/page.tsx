@@ -9,14 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { QRCodeDialog } from "@/components/admin/qr-code-dialog";
 import { TableDialog } from "@/components/admin/table-dialog";
 import { DeleteConfirmDialog } from "@/components/admin/delete-confirm-dialog";
-import { 
-  Plus, 
-  QrCode, 
-  Edit, 
-  Trash2,
-  Users,
-  MapPin
-} from "lucide-react";
+import { Plus, QrCode, Edit, Trash2, Users, MapPin } from "lucide-react";
 import { Table } from "@/types/database";
 
 export default function AdminTablesPage() {
@@ -109,8 +102,8 @@ export default function AdminTablesPage() {
     );
   }
 
-  const activeTables = tables.filter(table => table.isActive);
-  const inactiveTables = tables.filter(table => !table.isActive);
+  const activeTables = tables.filter((table) => table.isActive);
+  const inactiveTables = tables.filter((table) => !table.isActive);
 
   return (
     <AuthGuard>
@@ -152,7 +145,9 @@ export default function AdminTablesPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">{activeTables.length}</div>
+                <div className="text-2xl font-bold text-green-600">
+                  {activeTables.length}
+                </div>
               </CardContent>
             </Card>
 
@@ -164,7 +159,9 @@ export default function AdminTablesPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-gray-600">{inactiveTables.length}</div>
+                <div className="text-2xl font-bold text-gray-600">
+                  {inactiveTables.length}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -178,7 +175,10 @@ export default function AdminTablesPage() {
                   <CardHeader className="pb-3">
                     <CardTitle className="text-lg flex items-center justify-between">
                       Table {table.tableNumber}
-                      <Badge variant="outline" className="text-green-600 border-green-600">
+                      <Badge
+                        variant="outline"
+                        className="text-green-600 border-green-600"
+                      >
                         Active
                       </Badge>
                     </CardTitle>
@@ -189,7 +189,7 @@ export default function AdminTablesPage() {
                         📍 {table.location}
                       </p>
                     )}
-                    
+
                     <div className="flex flex-col space-y-2">
                       <Button
                         variant="outline"
@@ -200,7 +200,7 @@ export default function AdminTablesPage() {
                         <QrCode className="mr-2 h-4 w-4" />
                         View QR Code
                       </Button>
-                      
+
                       <div className="flex space-x-2">
                         <Button
                           variant="outline"
@@ -250,9 +250,7 @@ export default function AdminTablesPage() {
                     <CardHeader className="pb-3">
                       <CardTitle className="text-lg flex items-center justify-between">
                         Table {table.tableNumber}
-                        <Badge variant="secondary">
-                          Inactive
-                        </Badge>
+                        <Badge variant="secondary">Inactive</Badge>
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -261,7 +259,7 @@ export default function AdminTablesPage() {
                           📍 {table.location}
                         </p>
                       )}
-                      
+
                       <div className="flex space-x-2">
                         <Button
                           variant="outline"

@@ -16,7 +16,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem("adminAuth");
-      
+
       if (!token) {
         router.push("/admin/login");
         return;
@@ -25,7 +25,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
       try {
         const response = await fetch("/api/admin/verify", {
           headers: {
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 

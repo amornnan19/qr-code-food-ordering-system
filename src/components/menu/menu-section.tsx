@@ -85,5 +85,11 @@ export function MenuSection({ restaurantId, tableId }: MenuSectionProps) {
     );
   }
 
-  return <MenuDisplay categories={categories} restaurantId={restaurantId} tableId={tableId} />;
+  return (
+    <MenuDisplay
+      categories={categories}
+      restaurantId={restaurantId}
+      tableId={tableId}
+    />
+  );
 }

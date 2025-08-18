@@ -18,12 +18,12 @@ export default async function TableBillPage({ params }: TableBillPageProps) {
 
   // Get table with restaurant data
   const table = await prisma.table.findUnique({
-    where: { 
+    where: {
       id: tableId,
-      isActive: true 
+      isActive: true,
     },
-    include: { 
-      restaurant: true 
+    include: {
+      restaurant: true,
     },
   });
 
@@ -33,10 +33,7 @@ export default async function TableBillPage({ params }: TableBillPageProps) {
 
   return (
     <CartProvider>
-      <MainLayout 
-        restaurant={table.restaurant} 
-        tableNumber={table.tableNumber}
-      >
+      <MainLayout restaurant={table.restaurant} tableNumber={table.tableNumber}>
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <Button asChild variant="outline" size="sm">
@@ -45,11 +42,9 @@ export default async function TableBillPage({ params }: TableBillPageProps) {
                 Back to Menu
               </Link>
             </Button>
-            
+
             <Button asChild variant="outline" size="sm">
-              <Link href={`/table/${tableId}/orders`}>
-                View Orders
-              </Link>
+              <Link href={`/table/${tableId}/orders`}>View Orders</Link>
             </Button>
           </div>
 
@@ -60,17 +55,11 @@ export default async function TableBillPage({ params }: TableBillPageProps) {
             </p>
           </div>
 
-          <BillSplitting 
-            restaurantId={table.restaurant.id}
-            tableId={tableId}
-          />
+          <BillSplitting restaurantId={table.restaurant.id} tableId={tableId} />
 
           <Separator />
 
-          <ReceiptGenerator 
-            restaurant={table.restaurant}
-            table={table}
-          />
+          <ReceiptGenerator restaurant={table.restaurant} table={table} />
         </div>
       </MainLayout>
     </CartProvider>

@@ -5,7 +5,7 @@ import { OrderStatus } from "@/types/database";
 // GET single order
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ orderId: string }> }
+  { params }: { params: Promise<{ orderId: string }> },
 ) {
   try {
     const { orderId } = await params;
@@ -30,7 +30,7 @@ export async function GET(
     console.error("Error fetching order:", error);
     return NextResponse.json(
       { error: "Failed to fetch order" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -38,7 +38,7 @@ export async function GET(
 // PATCH - Update order status
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ orderId: string }> }
+  { params }: { params: Promise<{ orderId: string }> },
 ) {
   try {
     const { orderId } = await params;
@@ -47,7 +47,7 @@ export async function PATCH(
     if (!status || !Object.values(OrderStatus).includes(status)) {
       return NextResponse.json(
         { error: "Invalid order status" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -72,7 +72,7 @@ export async function PATCH(
     console.error("Error updating order:", error);
     return NextResponse.json(
       { error: "Failed to update order" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -80,7 +80,7 @@ export async function PATCH(
 // DELETE - Cancel order (only if PENDING)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ orderId: string }> }
+  { params }: { params: Promise<{ orderId: string }> },
 ) {
   try {
     const { orderId } = await params;
@@ -96,7 +96,7 @@ export async function DELETE(
     if (existingOrder.status !== OrderStatus.PENDING) {
       return NextResponse.json(
         { error: "Cannot cancel order that is not pending" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -110,7 +110,7 @@ export async function DELETE(
     console.error("Error cancelling order:", error);
     return NextResponse.json(
       { error: "Failed to cancel order" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
