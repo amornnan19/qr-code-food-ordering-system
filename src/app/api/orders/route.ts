@@ -25,15 +25,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate total amount
-    const menuIds = items.map((item: any) => item.menuId);
+    const menuIds = items.map((item: { menuId: string }) => item.menuId);
     const menus = await prisma.menu.findMany({
       where: { id: { in: menuIds } },
     });
 
-    const totalAmount = items.reduce((sum: number, item: any) => {
-      const menu = menus.find((m) => m.id === item.menuId);
-      return sum + (menu ? Number(menu.price) * item.quantity : 0);
-    }, 0);
+    const totalAmount = items.reduce(
+      (sum: number, item: { menuId: string; quantity: number }) => {
+        const menu = menus.find((m) => m.id === item.menuId);
+        return sum + (menu ? Number(menu.price) * item.quantity : 0);
+      },
+      0,
+    );
 
     // Generate order number
     const orderCount = await prisma.order.count();
@@ -49,15 +52,17 @@ export async function POST(request: NextRequest) {
         customerName: customerName || null,
         status: OrderStatus.PENDING,
         orderItems: {
-          create: items.map((item: any) => {
-            const menu = menus.find((m) => m.id === item.menuId);
-            return {
-              menuId: item.menuId,
-              quantity: item.quantity,
-              price: menu ? menu.price : 0,
-              notes: item.notes || null,
-            };
-          }),
+          create: items.map(
+            (item: { menuId: string; quantity: number; notes?: string }) => {
+              const menu = menus.find((m) => m.id === item.menuId);
+              return {
+                menuId: item.menuId,
+                quantity: item.quantity,
+                price: menu ? menu.price : 0,
+                notes: item.notes || null,
+              };
+            },
+          ),
         },
       },
       include: {
@@ -87,7 +92,11 @@ export async function GET(request: NextRequest) {
     const tableId = searchParams.get("tableId");
     const status = searchParams.get("status");
 
-    const whereClause: any = {};
+    const whereClause: {
+      restaurantId?: string;
+      tableId?: string;
+      status?: OrderStatus;
+    } = {};
 
     if (restaurantId) whereClause.restaurantId = restaurantId;
     if (tableId) whereClause.tableId = tableId;

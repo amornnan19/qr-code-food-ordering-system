@@ -35,5 +35,5 @@ export interface CartContextType {
   submitOrder: (
     restaurantId: string,
     tableId: string,
-  ) => Promise<{ success: boolean; order?: any; error?: string }>;
+  ) => Promise<{ success: boolean; order?: unknown; error?: string }>;
 }

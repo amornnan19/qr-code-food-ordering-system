@@ -15,14 +15,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Users, Calculator, Receipt } from "lucide-react";
+import { Users, Calculator } from "lucide-react";
 
 interface BillSplittingProps {
   restaurantId: string;
   tableId: string;
 }
 
-export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
+export function BillSplitting({}: BillSplittingProps) {
   const { getCartSummary } = useCart();
   const cartSummary = getCartSummary();
 
@@ -87,7 +87,9 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
           </Label>
           <Select
             value={splitMethod}
-            onValueChange={(value: any) => setSplitMethod(value)}
+            onValueChange={(value: "auto" | "manual" | "equal") =>
+              setSplitMethod(value)
+            }
           >
             <SelectTrigger className="w-32" id="split-method">
               <SelectValue />

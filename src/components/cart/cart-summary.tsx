@@ -15,15 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Trash2,
-  Minus,
-  Plus,
-  ShoppingCart,
-  Users,
-  Eye,
-  Calculator,
-} from "lucide-react";
+import { Trash2, Minus, Plus, Users, Eye, Calculator } from "lucide-react";
 import Link from "next/link";
 
 interface CartSummaryProps {

@@ -4,13 +4,11 @@ import { useState, useEffect } from "react";
 import { AuthGuard } from "@/components/admin/auth-guard";
 import { AdminLayout } from "@/components/admin/admin-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   BarChart3,
   TrendingUp,
   DollarSign,
   ShoppingBag,
-  Users,
   Clock,
   Medal,
 } from "lucide-react";
@@ -65,7 +63,7 @@ export default function AdminAnalyticsPage() {
 
   useEffect(() => {
     fetchAnalytics();
-  }, [timeRange]);
+  }, [timeRange]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading) {
     return (
@@ -281,7 +279,7 @@ export default function AdminAnalyticsPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {analytics.dailySales.slice(0, 10).map((day, index) => {
+                  {analytics.dailySales.slice(0, 10).map((day) => {
                     const date = new Date(day.date).toLocaleDateString(
                       "th-TH",
                       {

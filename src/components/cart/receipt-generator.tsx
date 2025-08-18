@@ -4,7 +4,6 @@ import { useCart } from "@/context/cart-context";
 import { Restaurant, Table } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Download, Printer, Share } from "lucide-react";
 
 interface ReceiptGeneratorProps {
@@ -17,7 +16,7 @@ interface ReceiptGeneratorProps {
 export function ReceiptGenerator({
   restaurant,
   table,
-  customerName,
+  customerName, // eslint-disable-line @typescript-eslint/no-unused-vars
   orderId,
 }: ReceiptGeneratorProps) {
   const { getCartSummary } = useCart();

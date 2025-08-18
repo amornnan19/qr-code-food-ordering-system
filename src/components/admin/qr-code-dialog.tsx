@@ -27,7 +27,7 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
     if (table && open) {
       generateQRCode();
     }
-  }, [table, open]);
+  }, [table, open]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const generateQRCode = async () => {
     if (!table) return;

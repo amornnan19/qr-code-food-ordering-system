@@ -18,7 +18,11 @@ export async function GET(request: NextRequest) {
     const token = authHeader.substring(7);
 
     try {
-      const decoded = jwt.verify(token, JWT_SECRET) as any;
+      const decoded = jwt.verify(token, JWT_SECRET) as {
+        email: string;
+        name: string;
+        role: string;
+      };
 
       return NextResponse.json({
         success: true,
@@ -28,7 +32,7 @@ export async function GET(request: NextRequest) {
           role: decoded.role,
         },
       });
-    } catch (jwtError) {
+    } catch {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
   } catch (error) {

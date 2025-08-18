@@ -125,7 +125,7 @@ export function CartProvider({ children }: CartProviderProps) {
     async (
       restaurantId: string,
       tableId: string,
-    ): Promise<{ success: boolean; order?: any; error?: string }> => {
+    ): Promise<{ success: boolean; order?: unknown; error?: string }> => {
       if (cart.length === 0) {
         return { success: false, error: "Cart is empty" };
       }

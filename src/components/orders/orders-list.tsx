@@ -72,7 +72,7 @@ export function OrdersList({
 
   useEffect(() => {
     fetchOrders();
-  }, [restaurantId, tableId]);
+  }, [restaurantId, tableId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const filterOrdersByStatus = (status: string) => {
     if (status === "all") return orders;

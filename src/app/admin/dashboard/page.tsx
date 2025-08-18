@@ -7,7 +7,6 @@ import {
   BarChart3,
   DollarSign,
   ShoppingBag,
-  Users,
   TrendingUp,
   Clock,
 } from "lucide-react";
