@@ -11,7 +11,6 @@
     "fix:test": "pnpm lint --fix && pnpm fmt && pnpm build",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
-    "clean": "rm -rf .next out dist build src/generated",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio"
