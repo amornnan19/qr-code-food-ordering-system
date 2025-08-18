@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trash2, Minus, Plus, ShoppingCart, Users, Eye } from "lucide-react";
+import { Trash2, Minus, Plus, ShoppingCart, Users, Eye, Calculator } from "lucide-react";
 import Link from "next/link";
 
 interface CartSummaryProps {
@@ -236,12 +236,20 @@ export function CartSummary({ children, restaurantId, tableId }: CartSummaryProp
               {isSubmitting ? "Placing Order..." : "Place Order"}
             </Button>
             
-            <Button asChild variant="outline" className="w-full">
-              <Link href={`/table/${tableId}/orders`}>
-                <Eye className="mr-2 h-4 w-4" />
-                View Orders
-              </Link>
-            </Button>
+            <div className="grid grid-cols-2 gap-2">
+              <Button asChild variant="outline" size="sm">
+                <Link href={`/table/${tableId}/orders`}>
+                  <Eye className="mr-1 h-4 w-4" />
+                  Orders
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="sm">
+                <Link href={`/table/${tableId}/bill`}>
+                  <Calculator className="mr-1 h-4 w-4" />
+                  แยกบิล
+                </Link>
+              </Button>
+            </div>
             
             <Button
               variant="outline"
