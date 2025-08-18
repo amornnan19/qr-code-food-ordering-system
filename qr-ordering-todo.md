@@ -1,12 +1,11 @@
 # QR Code Food Ordering System - Todo List
 
 ## 🚀 Progress Overview
-- ✅ **Phase 1-5**: COMPLETED (Project setup through ordering system)
-- 🔄 **Phase 6**: IN PROGRESS (Order management - 50% done)  
+- ✅ **Phase 1-6**: COMPLETED (Full ordering system with status tracking)
 - ✅ **Phase 7**: PARTIALLY COMPLETED (Bill splitting basics done)
 - ⏳ **Phase 8-12**: PENDING
 
-**Current Status**: Functional QR food ordering system with cart and bill splitting! 🎉
+**Current Status**: Complete QR food ordering system with order tracking and status management! 🎉
 
 ## Phase 1: Project Setup & Foundation ✅ COMPLETED
 
@@ -55,12 +54,17 @@
 - [x] Support bill splitting by customer name
 - [x] Add floating cart button with real-time updates
 
-## Phase 6: Order Management 🔄 IN PROGRESS
+## Phase 6: Order Management ✅ COMPLETED
 
 - [x] Create API routes for order CRUD operations (/api/orders)
 - [x] Implement order submission (Place Order button functional)
-- [ ] Build order status system (กำลังเตรียม/เสิร์ฟแล้ว) - IN PROGRESS
-- [ ] Create real-time updates (WebSocket or SSE)
+- [x] Build order status system (กำลังเตรียม/เสิร์ฟแล้ว)
+- [x] Create OrderStatusBadge with Thai labels and icons
+- [x] Build OrderCard component with status progression
+- [x] Create OrdersList with status filtering and tabs
+- [x] Add Orders page for each table (/table/[tableId]/orders)
+- [x] Add View Orders button in cart
+- [ ] Create real-time updates (WebSocket or SSE) - FUTURE ENHANCEMENT
 
 ## Phase 7: Bill Splitting ✅ PARTIALLY COMPLETED
 
