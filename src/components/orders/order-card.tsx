@@ -32,14 +32,14 @@ export function OrderCard({
 
   const getNextStatus = (currentStatus: OrderStatus): OrderStatus | null => {
     switch (currentStatus) {
-      case 'PENDING':
-        return 'CONFIRMED';
-      case 'CONFIRMED':
-        return 'PREPARING';
-      case 'PREPARING':
-        return 'READY';
-      case 'READY':
-        return 'SERVED';
+      case "PENDING":
+        return "CONFIRMED";
+      case "CONFIRMED":
+        return "PREPARING";
+      case "PREPARING":
+        return "READY";
+      case "READY":
+        return "SERVED";
       default:
         return null;
     }
@@ -47,13 +47,13 @@ export function OrderCard({
 
   const getStatusLabel = (status: OrderStatus): string => {
     switch (status) {
-      case 'CONFIRMED':
+      case "CONFIRMED":
         return "ยืนยันออเดอร์";
-      case 'PREPARING':
+      case "PREPARING":
         return "เริ่มทำอาหาร";
-      case 'READY':
+      case "READY":
         return "อาหารพร้อม";
-      case 'SERVED':
+      case "SERVED":
         return "เสิร์ฟแล้ว";
       default:
         return "อัพเดทสถานะ";
@@ -121,8 +121,7 @@ export function OrderCard({
               onClick={() => onStatusUpdate(order.id, nextStatus)}
               className="w-full"
               disabled={
-                order.status === 'SERVED' ||
-                order.status === 'CANCELLED'
+                order.status === "SERVED" || order.status === "CANCELLED"
               }
             >
               {getStatusLabel(nextStatus)}

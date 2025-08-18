@@ -44,7 +44,14 @@ export async function PATCH(
     const { orderId } = await params;
     const { status, notes } = await request.json();
 
-    const validStatuses = ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'SERVED', 'CANCELLED'];
+    const validStatuses = [
+      "PENDING",
+      "CONFIRMED",
+      "PREPARING",
+      "READY",
+      "SERVED",
+      "CANCELLED",
+    ];
     if (!status || !validStatuses.includes(status)) {
       return NextResponse.json(
         { error: "Invalid order status" },
@@ -94,7 +101,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    if (existingOrder.status !== 'PENDING') {
+    if (existingOrder.status !== "PENDING") {
       return NextResponse.json(
         { error: "Cannot cancel order that is not pending" },
         { status: 400 },
@@ -103,7 +110,7 @@ export async function DELETE(
 
     const order = await prisma.order.update({
       where: { id: orderId },
-      data: { status: 'CANCELLED' },
+      data: { status: "CANCELLED" },
     });
 
     return NextResponse.json({ order });

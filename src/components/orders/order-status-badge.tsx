@@ -10,37 +10,37 @@ interface OrderStatusBadgeProps {
 }
 
 const statusConfig = {
-  'PENDING': {
+  PENDING: {
     label: "รอดำเนินการ",
     variant: "secondary" as const,
     icon: Clock,
     color: "text-yellow-600",
   },
-  'CONFIRMED': {
+  CONFIRMED: {
     label: "ยืนยันแล้ว",
     variant: "default" as const,
     icon: CheckCircle,
     color: "text-blue-600",
   },
-  'PREPARING': {
+  PREPARING: {
     label: "กำลังเตรียม",
     variant: "default" as const,
     icon: ChefHat,
     color: "text-orange-600",
   },
-  'READY': {
+  READY: {
     label: "พร้อมเสิร์ฟ",
     variant: "default" as const,
     icon: Utensils,
     color: "text-green-600",
   },
-  'SERVED': {
+  SERVED: {
     label: "เสิร์ฟแล้ว",
     variant: "outline" as const,
     icon: CheckCircle,
     color: "text-green-700",
   },
-  'CANCELLED': {
+  CANCELLED: {
     label: "ยกเลิก",
     variant: "destructive" as const,
     icon: XCircle,

@@ -81,12 +81,7 @@ export function OrdersList({
     if (status === "all") return orders;
     if (status === "active") {
       return orders.filter((order) =>
-        [
-          'PENDING',
-          'CONFIRMED',
-          'PREPARING',
-          'READY',
-        ].includes(order.status),
+        ["PENDING", "CONFIRMED", "PREPARING", "READY"].includes(order.status),
       );
     }
     return orders.filter((order) => order.status === status);
@@ -99,10 +94,10 @@ export function OrdersList({
   const statusTabs = [
     { value: "all", label: "ทั้งหมด" },
     { value: "active", label: "Active" },
-    { value: 'PENDING', label: "รอดำเนินการ" },
-    { value: 'PREPARING', label: "กำลังทำ" },
-    { value: 'READY', label: "พร้อมเสิร์ฟ" },
-    { value: 'SERVED', label: "เสิร์ฟแล้ว" },
+    { value: "PENDING", label: "รอดำเนินการ" },
+    { value: "PREPARING", label: "กำลังทำ" },
+    { value: "READY", label: "พร้อมเสิร์ฟ" },
+    { value: "SERVED", label: "เสิร์ฟแล้ว" },
   ];
 
   if (loading) {

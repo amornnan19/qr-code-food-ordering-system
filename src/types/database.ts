@@ -12,14 +12,7 @@ import type {
 export type OrderStatus = $Enums.OrderStatus;
 
 // Base types from Prisma
-export type {
-  Restaurant,
-  Table,
-  Category,
-  Menu,
-  Order,
-  OrderItem,
-};
+export type { Restaurant, Table, Category, Menu, Order, OrderItem };
 
 // Extended types with relations
 export type RestaurantWithTables = Restaurant & {
