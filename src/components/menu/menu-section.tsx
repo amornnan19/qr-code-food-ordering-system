@@ -35,16 +35,6 @@ export function MenuSection({ restaurantId }: MenuSectionProps) {
     fetchMenu();
   }, [restaurantId]);
 
-  const handleAddToCart = (
-    menuId: string,
-    quantity: number,
-    notes?: string,
-  ) => {
-    // TODO: Implement cart functionality in Phase 5
-    console.log("Adding to cart:", { menuId, quantity, notes });
-    alert(`Added ${quantity} item(s) to cart!`);
-  };
-
   if (loading) {
     return (
       <div className="space-y-6">
@@ -94,11 +84,5 @@ export function MenuSection({ restaurantId }: MenuSectionProps) {
     );
   }
 
-  return (
-    <MenuDisplay
-      categories={categories}
-      onAddToCart={handleAddToCart}
-      cartItemCount={0}
-    />
-  );
+  return <MenuDisplay categories={categories} />;
 }

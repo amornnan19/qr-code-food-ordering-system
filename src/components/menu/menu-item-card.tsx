@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { MenuWithCategory } from "@/types/database";
 import {
   Card,
@@ -11,29 +10,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Minus, Plus } from "lucide-react";
+import { AddToCartDialog } from "@/components/cart/add-to-cart-dialog";
 
 interface MenuItemCardProps {
   menu: MenuWithCategory;
-  onAddToCart: (menuId: string, quantity: number, notes?: string) => void;
 }
 
-export function MenuItemCard({ menu, onAddToCart }: MenuItemCardProps) {
-  const [quantity, setQuantity] = useState(1);
-  const [notes, setNotes] = useState("");
-
-  const handleQuantityChange = (delta: number) => {
-    setQuantity(Math.max(1, quantity + delta));
-  };
-
-  const handleAddToCart = () => {
-    onAddToCart(menu.id, quantity, notes.trim() || undefined);
-    setQuantity(1);
-    setNotes("");
-  };
-
+export function MenuItemCard({ menu }: MenuItemCardProps) {
   return (
     <Card className="hover:shadow-md transition-shadow">
       <CardHeader className="pb-3">
@@ -69,51 +52,16 @@ export function MenuItemCard({ menu, onAddToCart }: MenuItemCardProps) {
           </div>
         </div>
 
-        {menu.isAvailable && (
-          <div className="space-y-3">
-            <div className="flex items-center space-x-3">
-              <Label
-                htmlFor={`quantity-${menu.id}`}
-                className="text-sm font-medium"
-              >
-                Quantity:
-              </Label>
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleQuantityChange(-1)}
-                  disabled={quantity <= 1}
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-                <span className="w-8 text-center font-medium">{quantity}</span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleQuantityChange(1)}
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
-            <div className="space-y-1">
-              <Label htmlFor={`notes-${menu.id}`} className="text-sm">
-                Special requests (optional)
-              </Label>
-              <Input
-                id={`notes-${menu.id}`}
-                placeholder="e.g., no spicy, extra sauce..."
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-              />
-            </div>
-
-            <Button onClick={handleAddToCart} className="w-full" size="lg">
-              Add to Cart - ฿{(menu.price * quantity).toFixed(2)}
+        {menu.isAvailable ? (
+          <AddToCartDialog menu={menu}>
+            <Button className="w-full" size="lg">
+              Add to Cart - ฿{menu.price.toString()}
             </Button>
-          </div>
+          </AddToCartDialog>
+        ) : (
+          <Button disabled className="w-full" size="lg">
+            Sold Out
+          </Button>
         )}
       </CardContent>
     </Card>

@@ -8,22 +8,21 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/cart-context";
+import { CartSummary } from "@/components/cart/cart-summary";
 
 interface MenuDisplayProps {
   categories: CategoryWithMenus[];
-  onAddToCart: (menuId: string, quantity: number, notes?: string) => void;
-  cartItemCount?: number;
 }
 
-export function MenuDisplay({
-  categories,
-  onAddToCart,
-  cartItemCount = 0,
-}: MenuDisplayProps) {
+export function MenuDisplay({ categories }: MenuDisplayProps) {
+  const { getCartSummary } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>(
     categories[0]?.id || "",
   );
+
+  const cartSummary = getCartSummary();
 
   // Filter menus based on search query
   const filteredCategories = useMemo(() => {
@@ -124,11 +123,7 @@ export function MenuDisplay({
                 .filter((menu) => menu.isActive)
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((menu) => (
-                  <MenuItemCard
-                    key={menu.id}
-                    menu={{ ...menu, category }}
-                    onAddToCart={onAddToCart}
-                  />
+                  <MenuItemCard key={menu.id} menu={{ ...menu, category }} />
                 ))}
             </div>
           </TabsContent>
@@ -136,12 +131,14 @@ export function MenuDisplay({
       </Tabs>
 
       {/* Floating Cart Button */}
-      {cartItemCount > 0 && (
+      {cartSummary.totalItems > 0 && (
         <div className="fixed bottom-6 right-6 z-50">
-          <Button size="lg" className="rounded-full shadow-lg">
-            <ShoppingCart className="mr-2 h-5 w-5" />
-            Cart ({cartItemCount})
-          </Button>
+          <CartSummary>
+            <Button size="lg" className="rounded-full shadow-lg">
+              <ShoppingCart className="mr-2 h-5 w-5" />
+              Cart ({cartSummary.totalItems})
+            </Button>
+          </CartSummary>
         </div>
       )}
     </div>

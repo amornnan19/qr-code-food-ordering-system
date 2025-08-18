@@ -8,14 +8,17 @@
     "start": "next start",
     "lint": "next lint",
     "fix": "pnpm lint --fix && pnpm fmt",
+    "fix:test": "pnpm lint --fix && pnpm fmt && pnpm build",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
+    "clean": "rm -rf .next out dist build src/generated",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^6.14.0",
+    "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
