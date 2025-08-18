@@ -6,7 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { OrderStatusBadge } from "./order-status-badge";
 import { Button } from "@/components/ui/button";
-import { OrderStatus } from "@/types/database";
+import { $Enums } from "@/generated/prisma";
+
+type OrderStatus = $Enums.OrderStatus;
 
 interface OrderCardProps {
   order: OrderWithItems;
@@ -30,14 +32,14 @@ export function OrderCard({
 
   const getNextStatus = (currentStatus: OrderStatus): OrderStatus | null => {
     switch (currentStatus) {
-      case OrderStatus.PENDING:
-        return OrderStatus.CONFIRMED;
-      case OrderStatus.CONFIRMED:
-        return OrderStatus.PREPARING;
-      case OrderStatus.PREPARING:
-        return OrderStatus.READY;
-      case OrderStatus.READY:
-        return OrderStatus.SERVED;
+      case 'PENDING':
+        return 'CONFIRMED';
+      case 'CONFIRMED':
+        return 'PREPARING';
+      case 'PREPARING':
+        return 'READY';
+      case 'READY':
+        return 'SERVED';
       default:
         return null;
     }
@@ -45,13 +47,13 @@ export function OrderCard({
 
   const getStatusLabel = (status: OrderStatus): string => {
     switch (status) {
-      case OrderStatus.CONFIRMED:
+      case 'CONFIRMED':
         return "ยืนยันออเดอร์";
-      case OrderStatus.PREPARING:
+      case 'PREPARING':
         return "เริ่มทำอาหาร";
-      case OrderStatus.READY:
+      case 'READY':
         return "อาหารพร้อม";
-      case OrderStatus.SERVED:
+      case 'SERVED':
         return "เสิร์ฟแล้ว";
       default:
         return "อัพเดทสถานะ";
@@ -119,8 +121,8 @@ export function OrderCard({
               onClick={() => onStatusUpdate(order.id, nextStatus)}
               className="w-full"
               disabled={
-                order.status === OrderStatus.SERVED ||
-                order.status === OrderStatus.CANCELLED
+                order.status === 'SERVED' ||
+                order.status === 'CANCELLED'
               }
             >
               {getStatusLabel(nextStatus)}

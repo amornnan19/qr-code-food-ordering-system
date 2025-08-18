@@ -1,4 +1,6 @@
-import { OrderStatus } from "@/types/database";
+import { $Enums } from "@/generated/prisma";
+
+type OrderStatus = $Enums.OrderStatus;
 import { Badge } from "@/components/ui/badge";
 import { Clock, ChefHat, CheckCircle, Utensils, XCircle } from "lucide-react";
 
@@ -8,37 +10,37 @@ interface OrderStatusBadgeProps {
 }
 
 const statusConfig = {
-  [OrderStatus.PENDING]: {
+  'PENDING': {
     label: "รอดำเนินการ",
     variant: "secondary" as const,
     icon: Clock,
     color: "text-yellow-600",
   },
-  [OrderStatus.CONFIRMED]: {
+  'CONFIRMED': {
     label: "ยืนยันแล้ว",
     variant: "default" as const,
     icon: CheckCircle,
     color: "text-blue-600",
   },
-  [OrderStatus.PREPARING]: {
+  'PREPARING': {
     label: "กำลังเตรียม",
     variant: "default" as const,
     icon: ChefHat,
     color: "text-orange-600",
   },
-  [OrderStatus.READY]: {
+  'READY': {
     label: "พร้อมเสิร์ฟ",
     variant: "default" as const,
     icon: Utensils,
     color: "text-green-600",
   },
-  [OrderStatus.SERVED]: {
+  'SERVED': {
     label: "เสิร์ฟแล้ว",
     variant: "outline" as const,
     icon: CheckCircle,
     color: "text-green-700",
   },
-  [OrderStatus.CANCELLED]: {
+  'CANCELLED': {
     label: "ยกเลิก",
     variant: "destructive" as const,
     icon: XCircle,

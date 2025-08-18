@@ -72,6 +72,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Generate QR code string
+    const qrCode = `${restaurant.id}-${tableNumber}-${Date.now()}`;
+
     const table = await prisma.table.create({
       data: {
         tableNumber,
@@ -79,6 +82,7 @@ export async function POST(request: NextRequest) {
         notes: notes || null,
         isActive: isActive ?? true,
         restaurantId: restaurant.id,
+        qrCode,
       },
     });
 

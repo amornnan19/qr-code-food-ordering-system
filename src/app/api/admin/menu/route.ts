@@ -70,6 +70,7 @@ export async function POST(request: NextRequest) {
         description: description || null,
         price,
         categoryId,
+        restaurantId: category.restaurantId, // Use the restaurant ID from category
         imageUrl: imageUrl || null,
         isAvailable: isAvailable ?? true,
       },

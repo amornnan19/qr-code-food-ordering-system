@@ -5,8 +5,11 @@ import type {
   Menu,
   Order,
   OrderItem,
-  OrderStatus,
+  $Enums,
 } from "../generated/prisma";
+
+// Export OrderStatus from $Enums
+export type OrderStatus = $Enums.OrderStatus;
 
 // Base types from Prisma
 export type {
@@ -16,7 +19,6 @@ export type {
   Menu,
   Order,
   OrderItem,
-  OrderStatus,
 };
 
 // Extended types with relations

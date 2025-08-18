@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { OrderWithItems, OrderStatus } from "@/types/database";
+import { OrderWithItems } from "@/types/database";
+import { $Enums } from "@/generated/prisma";
+
+type OrderStatus = $Enums.OrderStatus;
 import { OrderCard } from "./order-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -79,10 +82,10 @@ export function OrdersList({
     if (status === "active") {
       return orders.filter((order) =>
         [
-          OrderStatus.PENDING,
-          OrderStatus.CONFIRMED,
-          OrderStatus.PREPARING,
-          OrderStatus.READY,
+          'PENDING',
+          'CONFIRMED',
+          'PREPARING',
+          'READY',
         ].includes(order.status),
       );
     }
@@ -96,10 +99,10 @@ export function OrdersList({
   const statusTabs = [
     { value: "all", label: "ทั้งหมด" },
     { value: "active", label: "Active" },
-    { value: OrderStatus.PENDING, label: "รอดำเนินการ" },
-    { value: OrderStatus.PREPARING, label: "กำลังทำ" },
-    { value: OrderStatus.READY, label: "พร้อมเสิร์ฟ" },
-    { value: OrderStatus.SERVED, label: "เสิร์ฟแล้ว" },
+    { value: 'PENDING', label: "รอดำเนินการ" },
+    { value: 'PREPARING', label: "กำลังทำ" },
+    { value: 'READY', label: "พร้อมเสิร์ฟ" },
+    { value: 'SERVED', label: "เสิร์ฟแล้ว" },
   ];
 
   if (loading) {

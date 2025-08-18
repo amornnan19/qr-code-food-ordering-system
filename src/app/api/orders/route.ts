@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { OrderStatus } from "@/types/database";
+import { $Enums } from "@/generated/prisma";
 
 // POST - Create new order
 export async function POST(request: NextRequest) {
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
         orderNumber,
         totalAmount,
         customerName: customerName || null,
-        status: OrderStatus.PENDING,
+        status: $Enums.OrderStatus.PENDING,
         orderItems: {
           create: items.map(
             (item: { menuId: string; quantity: number; notes?: string }) => {
@@ -95,12 +95,12 @@ export async function GET(request: NextRequest) {
     const whereClause: {
       restaurantId?: string;
       tableId?: string;
-      status?: OrderStatus;
+      status?: $Enums.OrderStatus;
     } = {};
 
     if (restaurantId) whereClause.restaurantId = restaurantId;
     if (tableId) whereClause.tableId = tableId;
-    if (status) whereClause.status = status as OrderStatus;
+    if (status) whereClause.status = status as $Enums.OrderStatus;
 
     const orders = await prisma.order.findMany({
       where: whereClause,

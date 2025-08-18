@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { OrderStatus } from "@/types/database";
+import { $Enums } from "@/generated/prisma";
 
 // GET single order
 export async function GET(
@@ -44,7 +44,8 @@ export async function PATCH(
     const { orderId } = await params;
     const { status, notes } = await request.json();
 
-    if (!status || !Object.values(OrderStatus).includes(status)) {
+    const validStatuses = ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'SERVED', 'CANCELLED'];
+    if (!status || !validStatuses.includes(status)) {
       return NextResponse.json(
         { error: "Invalid order status" },
         { status: 400 },
@@ -93,7 +94,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    if (existingOrder.status !== OrderStatus.PENDING) {
+    if (existingOrder.status !== 'PENDING') {
       return NextResponse.json(
         { error: "Cannot cancel order that is not pending" },
         { status: 400 },
@@ -102,7 +103,7 @@ export async function DELETE(
 
     const order = await prisma.order.update({
       where: { id: orderId },
-      data: { status: OrderStatus.CANCELLED },
+      data: { status: 'CANCELLED' },
     });
 
     return NextResponse.json({ order });

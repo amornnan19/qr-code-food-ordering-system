@@ -43,6 +43,8 @@ model Table {
   tableNumber  String
   qrCode       String  @unique
   seats        Int     @default(4)
+  location     String?
+  notes        String?
   isActive     Boolean @default(true)
   
   // Relations
@@ -60,6 +62,7 @@ model Category {
   name         String
   description  String?
   sortOrder    Int     @default(0)
+  displayOrder Int     @default(0)
   isActive     Boolean @default(true)
   
   // Relations
