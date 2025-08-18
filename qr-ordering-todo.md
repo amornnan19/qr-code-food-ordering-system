@@ -1,6 +1,7 @@
 # QR Code Food Ordering System - Todo List
 
 ## 🚀 Progress Overview
+
 - ✅ **Phase 1-7**: COMPLETED (Full ordering system with bill splitting)
 - ⏳ **Phase 8-12**: PENDING
 
