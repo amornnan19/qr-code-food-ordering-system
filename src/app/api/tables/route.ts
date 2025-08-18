@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     if (!restaurantId) {
       return NextResponse.json(
         { error: "Restaurant ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     console.error("Error fetching tables:", error);
     return NextResponse.json(
       { error: "Failed to fetch tables" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     if (!restaurantId || !tableNumber) {
       return NextResponse.json(
         { error: "Restaurant ID and table number are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
     if (existingTable) {
       return NextResponse.json(
         { error: "Table number already exists" },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     console.error("Error creating table:", error);
     return NextResponse.json(
       { error: "Failed to create table" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

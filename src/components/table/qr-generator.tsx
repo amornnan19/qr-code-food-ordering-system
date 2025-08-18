@@ -19,7 +19,7 @@ export function QRGenerator({ table, restaurantName }: QRGeneratorProps) {
 
   const generateQR = async () => {
     setIsGenerating(true);
-    
+
     try {
       const response = await fetch("/api/qr/generate", {
         method: "POST",
@@ -71,8 +71,8 @@ export function QRGenerator({ table, restaurantName }: QRGeneratorProps) {
 
       <CardContent className="space-y-4">
         <div className="flex items-center space-x-2">
-          <Button 
-            onClick={generateQR} 
+          <Button
+            onClick={generateQR}
             disabled={isGenerating}
             className="flex-1"
           >
@@ -90,8 +90,8 @@ export function QRGenerator({ table, restaurantName }: QRGeneratorProps) {
           </Button>
 
           {qrCodeUrl && (
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={downloadQR}
               className="flex items-center"
             >
@@ -104,16 +104,23 @@ export function QRGenerator({ table, restaurantName }: QRGeneratorProps) {
         {qrCodeUrl && (
           <div className="space-y-3 text-center">
             <div className="flex justify-center">
-              <img 
-                src={qrCodeUrl} 
+              <img
+                src={qrCodeUrl}
                 alt={`QR Code for Table ${table.tableNumber}`}
                 className="border rounded-lg"
               />
             </div>
             <div className="space-y-1 text-sm text-muted-foreground">
-              <p><strong>Table:</strong> {table.tableNumber}</p>
-              <p><strong>Seats:</strong> {table.seats}</p>
-              <p><strong>URL:</strong> <code className="bg-muted px-1 rounded">{tableUrl}</code></p>
+              <p>
+                <strong>Table:</strong> {table.tableNumber}
+              </p>
+              <p>
+                <strong>Seats:</strong> {table.seats}
+              </p>
+              <p>
+                <strong>URL:</strong>{" "}
+                <code className="bg-muted px-1 rounded">{tableUrl}</code>
+              </p>
             </div>
           </div>
         )}

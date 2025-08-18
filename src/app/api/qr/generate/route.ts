@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     if (!tableId) {
       return NextResponse.json(
         { error: "Table ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -20,10 +20,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!table) {
-      return NextResponse.json(
-        { error: "Table not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Table not found" }, { status: 404 });
     }
 
     // Generate the URL that QR code will link to
@@ -60,7 +57,7 @@ export async function POST(request: NextRequest) {
     console.error("QR generation error:", error);
     return NextResponse.json(
       { error: "Failed to generate QR code" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

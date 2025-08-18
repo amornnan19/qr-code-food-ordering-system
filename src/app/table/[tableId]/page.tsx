@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { MainLayout } from "@/components/layout/main-layout";
+import { MenuSection } from "@/components/menu/menu-section";
 
 interface TablePageProps {
   params: Promise<{ tableId: string }>;
@@ -11,12 +12,12 @@ export default async function TablePage({ params }: TablePageProps) {
 
   // Get table with restaurant data
   const table = await prisma.table.findUnique({
-    where: { 
+    where: {
       id: tableId,
-      isActive: true 
+      isActive: true,
     },
-    include: { 
-      restaurant: true 
+    include: {
+      restaurant: true,
     },
   });
 
@@ -25,10 +26,7 @@ export default async function TablePage({ params }: TablePageProps) {
   }
 
   return (
-    <MainLayout 
-      restaurant={table.restaurant} 
-      tableNumber={table.tableNumber}
-    >
+    <MainLayout restaurant={table.restaurant} tableNumber={table.tableNumber}>
       <div className="space-y-6">
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold text-primary">
@@ -55,12 +53,8 @@ export default async function TablePage({ params }: TablePageProps) {
           </div>
         </div>
 
-        {/* TODO: Add menu components here in Phase 4 */}
-        <div className="bg-muted/50 rounded-lg p-8 text-center">
-          <p className="text-muted-foreground">
-            Menu will be displayed here once Phase 4 is completed.
-          </p>
-        </div>
+        {/* Menu Display */}
+        <MenuSection restaurantId={table.restaurant.id} />
       </div>
     </MainLayout>
   );

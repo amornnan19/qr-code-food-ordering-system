@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { MenuWithCategory } from "@/types/database";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -66,7 +72,10 @@ export function MenuItemCard({ menu, onAddToCart }: MenuItemCardProps) {
         {menu.isAvailable && (
           <div className="space-y-3">
             <div className="flex items-center space-x-3">
-              <Label htmlFor={`quantity-${menu.id}`} className="text-sm font-medium">
+              <Label
+                htmlFor={`quantity-${menu.id}`}
+                className="text-sm font-medium"
+              >
                 Quantity:
               </Label>
               <div className="flex items-center space-x-2">
@@ -101,11 +110,7 @@ export function MenuItemCard({ menu, onAddToCart }: MenuItemCardProps) {
               />
             </div>
 
-            <Button 
-              onClick={handleAddToCart}
-              className="w-full"
-              size="lg"
-            >
+            <Button onClick={handleAddToCart} className="w-full" size="lg">
               Add to Cart - ฿{(menu.price * quantity).toFixed(2)}
             </Button>
           </div>
