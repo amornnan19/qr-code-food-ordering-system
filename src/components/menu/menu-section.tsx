@@ -7,9 +7,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 interface MenuSectionProps {
   restaurantId: string;
+  tableId: string;
 }
 
-export function MenuSection({ restaurantId }: MenuSectionProps) {
+export function MenuSection({ restaurantId, tableId }: MenuSectionProps) {
   const [categories, setCategories] = useState<CategoryWithMenus[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -84,5 +85,5 @@ export function MenuSection({ restaurantId }: MenuSectionProps) {
     );
   }
 
-  return <MenuDisplay categories={categories} />;
+  return <MenuDisplay categories={categories} restaurantId={restaurantId} tableId={tableId} />;
 }

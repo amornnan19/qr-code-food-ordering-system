@@ -19,9 +19,11 @@ import { Trash2, Minus, Plus, ShoppingCart, Users } from "lucide-react";
 
 interface CartSummaryProps {
   children: React.ReactNode;
+  restaurantId: string;
+  tableId: string;
 }
 
-export function CartSummary({ children }: CartSummaryProps) {
+export function CartSummary({ children, restaurantId, tableId }: CartSummaryProps) {
   const {
     cart,
     removeFromCart,
@@ -30,9 +32,11 @@ export function CartSummary({ children }: CartSummaryProps) {
     updateNotes,
     clearCart,
     getCartSummary,
+    submitOrder,
   } = useCart();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const cartSummary = getCartSummary();
 
   if (cart.length === 0) {
@@ -43,6 +47,24 @@ export function CartSummary({ children }: CartSummaryProps) {
     const item = cart.find((item) => item.id === itemId);
     if (item) {
       updateQuantity(itemId, item.quantity + delta);
+    }
+  };
+
+  const handlePlaceOrder = async () => {
+    setIsSubmitting(true);
+    try {
+      const result = await submitOrder(restaurantId, tableId);
+      
+      if (result.success) {
+        alert("Order submitted successfully!");
+        setIsOpen(false);
+      } else {
+        alert(`Failed to submit order: ${result.error}`);
+      }
+    } catch (error) {
+      alert("An unexpected error occurred");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -204,12 +226,18 @@ export function CartSummary({ children }: CartSummaryProps) {
 
           {/* Action Buttons */}
           <div className="space-y-2">
-            <Button className="w-full" size="lg">
-              Place Order
+            <Button 
+              onClick={handlePlaceOrder}
+              disabled={isSubmitting}
+              className="w-full" 
+              size="lg"
+            >
+              {isSubmitting ? "Placing Order..." : "Place Order"}
             </Button>
             <Button
               variant="outline"
               onClick={clearCart}
+              disabled={isSubmitting}
               className="w-full text-destructive hover:text-destructive"
             >
               Clear Cart

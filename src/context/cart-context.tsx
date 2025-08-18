@@ -121,6 +121,51 @@ export function CartProvider({ children }: CartProviderProps) {
     [cart],
   );
 
+  const submitOrder = useCallback(
+    async (
+      restaurantId: string,
+      tableId: string,
+    ): Promise<{ success: boolean; order?: any; error?: string }> => {
+      if (cart.length === 0) {
+        return { success: false, error: "Cart is empty" };
+      }
+
+      try {
+        const items = cart.map((item) => ({
+          menuId: item.menuId,
+          quantity: item.quantity,
+          notes: item.notes,
+        }));
+
+        const response = await fetch("/api/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            restaurantId,
+            tableId,
+            customerName: null, // Will be handled per item
+            items,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          return { success: false, error: data.error || "Failed to submit order" };
+        }
+
+        // Clear cart after successful order
+        clearCart();
+
+        return { success: true, order: data.order };
+      } catch (error) {
+        console.error("Error submitting order:", error);
+        return { success: false, error: "Network error" };
+      }
+    },
+    [cart, clearCart],
+  );
+
   const value: CartContextType = {
     cart,
     addToCart,
@@ -131,6 +176,7 @@ export function CartProvider({ children }: CartProviderProps) {
     clearCart,
     getCartSummary,
     getCustomerTotal,
+    submitOrder,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

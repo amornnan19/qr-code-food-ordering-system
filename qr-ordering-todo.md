@@ -1,56 +1,72 @@
 # QR Code Food Ordering System - Todo List
 
-## Phase 1: Project Setup & Foundation
+## 🚀 Progress Overview
+- ✅ **Phase 1-5**: COMPLETED (Project setup through ordering system)
+- 🔄 **Phase 6**: IN PROGRESS (Order management - 50% done)  
+- ✅ **Phase 7**: PARTIALLY COMPLETED (Bill splitting basics done)
+- ⏳ **Phase 8-12**: PENDING
 
-- [ ] Initialize Next.js project with TypeScript
-- [ ] Setup Tailwind CSS
-- [ ] Install and configure Prisma ORM
-- [ ] Setup SQLite database (development)
-- [ ] Create basic folder structure
-- [ ] Setup environment variables
+**Current Status**: Functional QR food ordering system with cart and bill splitting! 🎉
 
-## Phase 2: Database Design & Models
+## Phase 1: Project Setup & Foundation ✅ COMPLETED
 
-- [ ] Design database schema (Tables, Menu, Orders, OrderItems)
-- [ ] Create Prisma schema file
-- [ ] Generate database migrations
-- [ ] Seed initial data (sample menu items)
+- [x] Initialize Next.js project with TypeScript
+- [x] Setup Tailwind CSS
+- [x] Install and configure Prisma ORM
+- [x] Setup MySQL database (changed from SQLite)
+- [x] Create basic folder structure
+- [x] Setup environment variables
+- [x] Add prettier formatting and GitHub Actions CI
 
-## Phase 3: QR Code System
+## Phase 2: Database Design & Models ✅ COMPLETED
 
-- [ ] Install qrcode library
-- [ ] Create API route for generating QR codes
-- [ ] Create table management system
-- [ ] Generate unique URLs for each table (/table/[tableId])
+- [x] Design database schema (Restaurant, Table, Category, Menu, Order, OrderItem)
+- [x] Create Prisma schema file with complete relationships
+- [x] Generate database migrations (using db push)
+- [x] Create TypeScript types for type safety
+- [ ] Seed initial data (sample menu items) - NOT YET NEEDED
 
-## Phase 4: Menu System
+## Phase 3: QR Code System ✅ COMPLETED
 
-- [ ] Create menu item components
-- [ ] Build responsive menu display
-- [ ] Add category filtering
-- [ ] Implement search functionality
-- [ ] Add item images and descriptions
+- [x] Install qrcode library
+- [x] Create API route for generating QR codes (/api/qr/generate)
+- [x] Create table management system with QR generator component
+- [x] Generate unique URLs for each table (/table/[tableId])
+- [x] Add table API routes for CRUD operations
 
-## Phase 5: Ordering System
+## Phase 4: Menu System ✅ COMPLETED
 
-- [ ] Create order context/state management
-- [ ] Build "Add to Cart" functionality
-- [ ] Implement customer name input for each item
-- [ ] Create order summary component
-- [ ] Add quantity adjustment controls
+- [x] Create menu item components (MenuItemCard)
+- [x] Build responsive menu display with tabs
+- [x] Add category filtering with tabs system
+- [x] Implement search functionality (real-time)
+- [x] Add item images and descriptions support
+- [x] Create menu API endpoint (/api/menu)
+- [x] Add loading states and error handling
 
-## Phase 6: Order Management
+## Phase 5: Ordering System ✅ COMPLETED
 
-- [ ] Create API routes for order CRUD operations
-- [ ] Implement order submission
-- [ ] Build order status system (กำลังเตรียม/เสิร์ฟแล้ว)
+- [x] Create order context/state management (CartContext)
+- [x] Build "Add to Cart" functionality with dialog
+- [x] Implement customer name input for each item
+- [x] Create order summary component (CartSummary)
+- [x] Add quantity adjustment controls
+- [x] Build cart persistence across components
+- [x] Support bill splitting by customer name
+- [x] Add floating cart button with real-time updates
+
+## Phase 6: Order Management 🔄 IN PROGRESS
+
+- [x] Create API routes for order CRUD operations (/api/orders)
+- [x] Implement order submission (Place Order button functional)
+- [ ] Build order status system (กำลังเตรียม/เสิร์ฟแล้ว) - IN PROGRESS
 - [ ] Create real-time updates (WebSocket or SSE)
 
-## Phase 7: Bill Splitting
+## Phase 7: Bill Splitting ✅ PARTIALLY COMPLETED
 
-- [ ] Group orders by customer name
-- [ ] Calculate individual totals
-- [ ] Create bill splitting interface
+- [x] Group orders by customer name (already in CartSummary)
+- [x] Calculate individual totals (already working)
+- [x] Create bill splitting interface (CartSummary shows per customer)
 - [ ] Add manual adjustment options
 - [ ] Generate individual receipts
 

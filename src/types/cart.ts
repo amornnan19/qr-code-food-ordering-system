@@ -32,4 +32,8 @@ export interface CartContextType {
   clearCart: () => void;
   getCartSummary: () => CartSummary;
   getCustomerTotal: (customerName: string) => number;
+  submitOrder: (
+    restaurantId: string,
+    tableId: string,
+  ) => Promise<{ success: boolean; order?: any; error?: string }>;
 }

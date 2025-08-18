@@ -56,7 +56,7 @@ export default async function TablePage({ params }: TablePageProps) {
           </div>
 
           {/* Menu Display */}
-          <MenuSection restaurantId={table.restaurant.id} />
+          <MenuSection restaurantId={table.restaurant.id} tableId={table.id} />
         </div>
       </MainLayout>
     </CartProvider>

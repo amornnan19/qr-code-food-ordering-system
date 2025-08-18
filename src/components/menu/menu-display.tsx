@@ -13,9 +13,11 @@ import { CartSummary } from "@/components/cart/cart-summary";
 
 interface MenuDisplayProps {
   categories: CategoryWithMenus[];
+  restaurantId: string;
+  tableId: string;
 }
 
-export function MenuDisplay({ categories }: MenuDisplayProps) {
+export function MenuDisplay({ categories, restaurantId, tableId }: MenuDisplayProps) {
   const { getCartSummary } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>(
@@ -133,7 +135,7 @@ export function MenuDisplay({ categories }: MenuDisplayProps) {
       {/* Floating Cart Button */}
       {cartSummary.totalItems > 0 && (
         <div className="fixed bottom-6 right-6 z-50">
-          <CartSummary>
+          <CartSummary restaurantId={restaurantId} tableId={tableId}>
             <Button size="lg" className="rounded-full shadow-lg">
               <ShoppingCart className="mr-2 h-5 w-5" />
               Cart ({cartSummary.totalItems})
