@@ -114,31 +114,25 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <SidebarContent />
       </div>
 
-      {/* Mobile Sidebar */}
-      <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-        <div className="flex flex-1 flex-col">
-          {/* Header */}
-          <header className="flex h-16 items-center gap-4 border-b bg-background px-6 lg:hidden">
+      {/* Main Content Container */}
+      <div className="flex flex-1 flex-col">
+        {/* Mobile Header */}
+        <header className="flex h-16 items-center gap-4 border-b bg-background px-6 lg:hidden">
+          <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon">
                 <MenuIcon className="h-5 w-5" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <h1 className="flex-1 text-lg font-semibold">Admin Panel</h1>
-          </header>
+            <SheetContent side="left" className="w-64 p-0">
+              <SidebarContent />
+            </SheetContent>
+          </Sheet>
+          <h1 className="flex-1 text-lg font-semibold">Admin Panel</h1>
+        </header>
 
-          {/* Main Content */}
-          <main className="flex-1 p-6">{children}</main>
-        </div>
-
-        <SheetContent side="left" className="w-64 p-0">
-          <SidebarContent />
-        </SheetContent>
-      </Sheet>
-
-      {/* Desktop Content */}
-      <div className="hidden lg:flex lg:flex-1 lg:flex-col">
+        {/* Main Content */}
         <main className="flex-1 p-6">{children}</main>
       </div>
     </div>
