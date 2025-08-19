@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useCart } from "@/context/cart-context";
+import { useState, useEffect } from "react";
+import { OrderWithItems } from "@/types/database";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,30 +22,76 @@ interface BillSplittingProps {
   tableId: string;
 }
 
-export function BillSplitting({}: BillSplittingProps) {
-  const { getCartSummary } = useCart();
-  const cartSummary = getCartSummary();
-
-  // Manual adjustments state
+export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
+  const [orders, setOrders] = useState<OrderWithItems[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [adjustments, setAdjustments] = useState<Record<string, number>>({});
   const [splitMethod, setSplitMethod] = useState<"auto" | "manual" | "equal">(
     "auto",
   );
 
-  if (cartSummary.totalItems === 0) {
+  // Fetch orders for this table
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const params = new URLSearchParams({ 
+          restaurantId,
+          tableId,
+          status: 'SERVED' // Only get served orders for bill calculation
+        });
+        const response = await fetch(`/api/orders?${params}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          setOrders(data.orders);
+        }
+      } catch (error) {
+        console.error('Failed to fetch orders:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [restaurantId, tableId]);
+
+  if (isLoading) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        ไม่มีรายการในตะกร้า
+      <div className="text-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+        <p>Loading bill information...</p>
       </div>
     );
   }
 
-  const customerNames = Object.keys(cartSummary.customerGroups);
+  if (orders.length === 0) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        <p>ไม่มีรายการอาหารที่เสิร์ฟแล้ว</p>
+        <p className="text-sm mt-2">เมื่อมีการเสิร์ฟอาหารแล้ว บิลจะแสดงที่นี่</p>
+      </div>
+    );
+  }
+
+  // Group served orders by customer name
+  const customerGroups: Record<string, OrderWithItems[]> = {};
+  let totalAmount = 0;
+
+  orders.forEach(order => {
+    const customerName = order.customerName || 'ไม่ระบุชื่อ';
+    if (!customerGroups[customerName]) {
+      customerGroups[customerName] = [];
+    }
+    customerGroups[customerName].push(order);
+    totalAmount += Number(order.totalAmount);
+  });
+
+  const customerNames = Object.keys(customerGroups);
 
   // Calculate totals with adjustments
   const getCustomerTotal = (customerName: string): number => {
-    const baseTotal = cartSummary.customerGroups[customerName].reduce(
-      (sum, item) => sum + item.quantity * Number(item.menu.price),
+    const baseTotal = customerGroups[customerName].reduce(
+      (sum, order) => sum + Number(order.totalAmount),
       0,
     );
     const adjustment = adjustments[customerName] || 0;
@@ -53,12 +99,12 @@ export function BillSplitting({}: BillSplittingProps) {
   };
 
   const getEqualSplitAmount = (): number => {
-    return cartSummary.totalAmount / customerNames.length;
+    return totalAmount / customerNames.length;
   };
 
   const getTotalWithAdjustments = (): number => {
     if (splitMethod === "equal") {
-      return cartSummary.totalAmount;
+      return totalAmount;
     }
     return customerNames.reduce((sum, name) => sum + getCustomerTotal(name), 0);
   };
@@ -107,7 +153,7 @@ export function BillSplitting({}: BillSplittingProps) {
       {splitMethod === "auto" && (
         <div className="grid gap-4 md:grid-cols-2">
           {customerNames.map((customerName) => {
-            const customerItems = cartSummary.customerGroups[customerName];
+            const customerOrders = customerGroups[customerName];
             const customerTotal = getCustomerTotal(customerName);
 
             return (
@@ -119,16 +165,18 @@ export function BillSplitting({}: BillSplittingProps) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {customerItems.map((item) => (
-                    <div key={item.id} className="flex justify-between text-sm">
-                      <span>
-                        {item.menu.name} x{item.quantity}
-                      </span>
-                      <span>
-                        ฿{(item.quantity * Number(item.menu.price)).toFixed(2)}
-                      </span>
-                    </div>
-                  ))}
+                  {customerOrders.map((order) => 
+                    order.orderItems.map((item) => (
+                      <div key={`${order.id}-${item.id}`} className="flex justify-between text-sm">
+                        <span>
+                          {item.menu.name} x{item.quantity}
+                        </span>
+                        <span>
+                          ฿{(item.quantity * Number(item.price)).toFixed(2)}
+                        </span>
+                      </div>
+                    ))
+                  )}
                 </CardContent>
               </Card>
             );
@@ -141,8 +189,8 @@ export function BillSplitting({}: BillSplittingProps) {
         <div className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             {customerNames.map((customerName) => {
-              const baseTotal = cartSummary.customerGroups[customerName].reduce(
-                (sum, item) => sum + item.quantity * Number(item.menu.price),
+              const baseTotal = customerGroups[customerName].reduce(
+                (sum, order) => sum + Number(order.totalAmount),
                 0,
               );
               const adjustment = adjustments[customerName] || 0;
@@ -253,10 +301,10 @@ export function BillSplitting({}: BillSplittingProps) {
           <div className="space-y-2">
             <div className="flex justify-between">
               <span>ยอดรวมต้นฉบับ:</span>
-              <span>฿{cartSummary.totalAmount.toFixed(2)}</span>
+              <span>฿{totalAmount.toFixed(2)}</span>
             </div>
             {splitMethod === "manual" &&
-              getTotalWithAdjustments() !== cartSummary.totalAmount && (
+              getTotalWithAdjustments() !== totalAmount && (
                 <div className="flex justify-between">
                   <span>ยอดหลังปรับแต่ง:</span>
                   <span>฿{getTotalWithAdjustments().toFixed(2)}</span>
@@ -265,6 +313,10 @@ export function BillSplitting({}: BillSplittingProps) {
             <div className="flex justify-between text-sm text-muted-foreground">
               <span>จำนวนคน:</span>
               <span>{customerNames.length} คน</span>
+            </div>
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span>จำนวนออเดอร์:</span>
+              <span>{orders.length} ออเดอร์</span>
             </div>
           </div>
         </CardContent>

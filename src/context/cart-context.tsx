@@ -131,36 +131,55 @@ export function CartProvider({ children }: CartProviderProps) {
       }
 
       try {
-        const items = cart.map((item) => ({
-          menuId: item.menuId,
-          quantity: item.quantity,
-          notes: item.notes,
-        }));
+        // Group cart items by customer name
+        const customerGroups = cart.reduce(
+          (groups, item) => {
+            const customer = item.customerName || "ไม่ระบุชื่อ";
+            if (!groups[customer]) {
+              groups[customer] = [];
+            }
+            groups[customer].push(item);
+            return groups;
+          },
+          {} as Record<string, typeof cart>,
+        );
 
-        const response = await fetch("/api/orders", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            restaurantId,
-            tableId,
-            customerName: null, // Will be handled per item
-            items,
-          }),
-        });
+        // Create separate orders for each customer
+        const orders = [];
+        for (const [customerName, customerItems] of Object.entries(customerGroups)) {
+          const items = customerItems.map((item) => ({
+            menuId: item.menuId,
+            quantity: item.quantity,
+            notes: item.notes,
+          }));
 
-        const data = await response.json();
+          const response = await fetch("/api/orders", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              restaurantId,
+              tableId,
+              customerName: customerName === "ไม่ระบุชื่อ" ? null : customerName,
+              items,
+            }),
+          });
 
-        if (!response.ok) {
-          return {
-            success: false,
-            error: data.error || "Failed to submit order",
-          };
+          const data = await response.json();
+
+          if (!response.ok) {
+            return {
+              success: false,
+              error: data.error || "Failed to submit order",
+            };
+          }
+
+          orders.push(data.order);
         }
 
-        // Clear cart after successful order
+        // Clear cart after successful orders
         clearCart();
 
-        return { success: true, order: data.order };
+        return { success: true, order: orders };
       } catch (error) {
         console.error("Error submitting order:", error);
         return { success: false, error: "Network error" };

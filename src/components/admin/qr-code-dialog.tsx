@@ -34,20 +34,20 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
 
     setIsLoading(true);
     try {
-      const tableUrl = `${window.location.origin}/table/${table.id}`;
       const response = await fetch("/api/qr/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          text: tableUrl,
-          size: 400,
+          tableId: table.id,
         }),
       });
 
       if (response.ok) {
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        setQrCodeUrl(url);
+        const data = await response.json();
+        setQrCodeUrl(data.qrCodeUrl);
+      } else {
+        const error = await response.json();
+        console.error("QR generation error:", error);
       }
     } catch (error) {
       console.error("Failed to generate QR code:", error);

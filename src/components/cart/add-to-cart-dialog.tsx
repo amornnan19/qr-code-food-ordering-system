@@ -71,20 +71,23 @@ export function AddToCartDialog({ menu, children }: AddToCartDialogProps) {
             )}
           </DialogTitle>
           <DialogDescription className="text-left">
-            <div className="space-y-2">
-              <h3 className="font-medium text-foreground">{menu.name}</h3>
-              {menu.description && (
-                <p className="text-sm">{menu.description}</p>
-              )}
-              <div className="flex items-center space-x-2">
-                <Badge variant="outline">{menu.category.name}</Badge>
-                <span className="text-lg font-bold text-primary">
-                  ฿{menu.price.toString()}
-                </span>
-              </div>
-            </div>
+            Select quantity and customer name for this item
           </DialogDescription>
         </DialogHeader>
+
+        {/* Menu Item Info */}
+        <div className="space-y-2 border-b pb-4">
+          <h3 className="font-medium text-foreground">{menu.name}</h3>
+          {menu.description && (
+            <p className="text-sm text-muted-foreground">{menu.description}</p>
+          )}
+          <div className="flex items-center space-x-2">
+            <Badge variant="outline">{menu.category.name}</Badge>
+            <span className="text-lg font-bold text-primary">
+              ฿{menu.price.toString()}
+            </span>
+          </div>
+        </div>
 
         <div className="space-y-4 py-4">
           {/* Customer Name */}

@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import { Menu, Category } from "@/types/database";
 import { MenuDialog } from "@/components/admin/menu-dialog";
+import { CategoryDialog } from "@/components/admin/category-dialog";
+import { RestaurantSetupDialog } from "@/components/admin/restaurant-setup-dialog";
 import { DeleteConfirmDialog } from "@/components/admin/delete-confirm-dialog";
 
 export default function AdminMenuPage() {
@@ -28,12 +30,39 @@ export default function AdminMenuPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isLoading, setIsLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
+  const [restaurantSetupOpen, setRestaurantSetupOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Menu | null>(null);
   const [deletingItem, setDeletingItem] = useState<Menu | null>(null);
 
+  const checkRestaurant = async () => {
+    try {
+      const token = localStorage.getItem("adminAuth");
+      const response = await fetch("/api/admin/restaurants", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      
+      if (response.ok) {
+        const restaurant = await response.json();
+        if (!restaurant) {
+          setRestaurantSetupOpen(true);
+          return false;
+        }
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Failed to check restaurant:", error);
+      return false;
+    }
+  };
+
   const fetchData = async () => {
     try {
+      const hasRestaurant = await checkRestaurant();
+      if (!hasRestaurant) return;
+
       const token = localStorage.getItem("adminAuth");
       const [menuResponse, categoriesResponse] = await Promise.all([
         fetch("/api/admin/menu", {
@@ -135,10 +164,19 @@ export default function AdminMenuPage() {
                 Manage your restaurant menu items and categories
               </p>
             </div>
-            <Button onClick={() => setDialogOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Menu Item
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setCategoryDialogOpen(true)}
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Add Category
+              </Button>
+              <Button onClick={() => setDialogOpen(true)}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Menu Item
+              </Button>
+            </div>
           </div>
 
           {/* Filters */}
@@ -256,6 +294,24 @@ export default function AdminMenuPage() {
           onClose={handleDialogClose}
           categories={categories}
           editingItem={editingItem}
+        />
+
+        <CategoryDialog
+          open={categoryDialogOpen}
+          onClose={(refresh) => {
+            setCategoryDialogOpen(false);
+            if (refresh) fetchData();
+          }}
+        />
+
+        <RestaurantSetupDialog
+          open={restaurantSetupOpen}
+          onClose={(created) => {
+            setRestaurantSetupOpen(false);
+            if (created) {
+              fetchData();
+            }
+          }}
         />
 
         <DeleteConfirmDialog

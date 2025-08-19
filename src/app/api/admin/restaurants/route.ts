@@ -14,21 +14,16 @@ function verifyAdminToken(authHeader: string | null) {
   return jwt.verify(token, JWT_SECRET);
 }
 
-// GET - Fetch all categories
+// GET - Get restaurant info
 export async function GET(request: NextRequest) {
   try {
     const authHeader = request.headers.get("authorization");
     verifyAdminToken(authHeader);
 
-    const categories = await prisma.category.findMany({
-      orderBy: {
-        displayOrder: "asc",
-      },
-    });
-
-    return NextResponse.json(categories);
+    const restaurant = await prisma.restaurant.findFirst();
+    return NextResponse.json(restaurant);
   } catch (error) {
-    console.error("Categories fetch error:", error);
+    console.error("Restaurant fetch error:", error);
     return NextResponse.json(
       { error: "Unauthorized or internal server error" },
       { status: 401 },
@@ -36,44 +31,44 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Create new category
+// POST - Create restaurant
 export async function POST(request: NextRequest) {
   try {
     const authHeader = request.headers.get("authorization");
     verifyAdminToken(authHeader);
 
-    const { name, description, displayOrder } = await request.json();
+    const { name, description, address, phone } = await request.json();
 
     if (!name) {
       return NextResponse.json(
-        { error: "Category name is required" },
+        { error: "Restaurant name is required" },
         { status: 400 },
       );
     }
 
-    // Get restaurant from admin session (assuming single restaurant)
-    const restaurant = await prisma.restaurant.findFirst();
-    if (!restaurant) {
+    // Check if restaurant already exists
+    const existingRestaurant = await prisma.restaurant.findFirst();
+    if (existingRestaurant) {
       return NextResponse.json(
-        { error: "Restaurant not found" },
-        { status: 404 },
+        { error: "Restaurant already exists. Use PUT to update." },
+        { status: 409 },
       );
     }
 
-    const category = await prisma.category.create({
+    const restaurant = await prisma.restaurant.create({
       data: {
         name,
         description: description || null,
-        displayOrder: displayOrder ?? 0,
-        restaurantId: restaurant.id,
+        address: address || null,
+        phone: phone || null,
       },
     });
 
-    return NextResponse.json(category);
+    return NextResponse.json(restaurant);
   } catch (error) {
-    console.error("Category creation error:", error);
+    console.error("Restaurant creation error:", error);
     return NextResponse.json(
-      { error: "Failed to create category" },
+      { error: "Failed to create restaurant" },
       { status: 500 },
     );
   }
