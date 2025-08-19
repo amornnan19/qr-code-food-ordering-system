@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { QRCodeDialog } from "@/components/admin/qr-code-dialog";
 import { TableDialog } from "@/components/admin/table-dialog";
 import { DeleteConfirmDialog } from "@/components/admin/delete-confirm-dialog";
-import { Plus, QrCode, Edit, Trash2, Users, MapPin } from "lucide-react";
+import { Plus, QrCode, Edit, Trash2, Users, MapPin, RotateCcw } from "lucide-react";
 import { Table } from "@/types/database";
 
 export default function AdminTablesPage() {
@@ -21,6 +21,7 @@ export default function AdminTablesPage() {
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
   const [editingTable, setEditingTable] = useState<Table | null>(null);
   const [deletingTable, setDeletingTable] = useState<Table | null>(null);
+  const [isResetting, setIsResetting] = useState<string | null>(null);
 
   const fetchTables = async () => {
     try {
@@ -84,6 +85,35 @@ export default function AdminTablesPage() {
     setEditingTable(null);
     if (refresh) {
       fetchTables();
+    }
+  };
+
+  const handleReset = async (table: Table) => {
+    if (!confirm(`Are you sure you want to reset Table ${table.tableNumber}? This will cancel any pending orders and generate a new QR code.`)) {
+      return;
+    }
+
+    setIsResetting(table.id);
+    try {
+      const token = localStorage.getItem("adminAuth");
+      const response = await fetch(`/api/admin/tables/${table.id}/reset`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(`Table ${table.tableNumber} reset successfully! ${data.cancelledOrders > 0 ? `${data.cancelledOrders} pending orders were cancelled.` : 'No pending orders to cancel.'}`);
+        fetchTables();
+      } else {
+        const error = await response.json();
+        alert(error.error || "Failed to reset table");
+      }
+    } catch (error) {
+      console.error("Reset error:", error);
+      alert("Network error. Please try again.");
+    } finally {
+      setIsResetting(null);
     }
   };
 
@@ -199,6 +229,26 @@ export default function AdminTablesPage() {
                       >
                         <QrCode className="mr-2 h-4 w-4" />
                         View QR Code
+                      </Button>
+
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => handleReset(table)}
+                        disabled={isResetting === table.id}
+                        className="w-full"
+                      >
+                        {isResetting === table.id ? (
+                          <>
+                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
+                            Resetting...
+                          </>
+                        ) : (
+                          <>
+                            <RotateCcw className="mr-2 h-4 w-4" />
+                            Reset Table
+                          </>
+                        )}
                       </Button>
 
                       <div className="flex space-x-2">
