@@ -22,6 +22,7 @@ interface QRCodeDialogProps {
 
 export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
+  const [tableUrl, setTableUrl] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -46,6 +47,7 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
       if (response.ok) {
         const data = await response.json();
         setQrCodeUrl(data.qrCodeUrl);
+        setTableUrl(data.tableUrl);
       } else {
         const error = await response.json();
         console.error("QR generation error:", error);
@@ -69,9 +71,7 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
   };
 
   const shareQR = async () => {
-    if (!table) return;
-
-    const tableUrl = `${window.location.origin}/table/${table.id}`;
+    if (!table || !tableUrl) return;
 
     if (navigator.share) {
       try {
@@ -90,9 +90,8 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
   };
 
   const copyURL = () => {
-    if (!table) return;
+    if (!tableUrl) return;
 
-    const tableUrl = `${window.location.origin}/table/${table.id}`;
     navigator.clipboard
       .writeText(tableUrl)
       .then(() => {
@@ -104,14 +103,11 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
   };
 
   const openTable = () => {
-    if (!table) return;
-    const tableUrl = `${window.location.origin}/table/${table.id}`;
+    if (!tableUrl) return;
     window.open(tableUrl, "_blank");
   };
 
   if (!table) return null;
-
-  const tableUrl = `${window.location.origin}/table/${table.id}`;
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -189,15 +185,30 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
               <Download className="mr-2 h-4 w-4" />
               Download
             </Button>
-            <Button variant="outline" size="sm" onClick={shareQR}>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={shareQR}
+              disabled={!tableUrl}
+            >
               <Share className="mr-2 h-4 w-4" />
               Share
             </Button>
-            <Button variant="outline" size="sm" onClick={copyURL}>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={copyURL}
+              disabled={!tableUrl}
+            >
               <Copy className="mr-2 h-4 w-4" />
               Copy URL
             </Button>
-            <Button variant="outline" size="sm" onClick={openTable}>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={openTable}
+              disabled={!tableUrl}
+            >
               <ExternalLink className="mr-2 h-4 w-4" />
               Open
             </Button>

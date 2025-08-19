@@ -217,7 +217,7 @@ export default function AdminMenuPage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredMenuItems.map((item) => (
               <Card key={item.id} className="overflow-hidden">
-                <div className="aspect-video bg-gray-100 flex items-center justify-center">
+                <div className="aspect-video bg-gray-100 flex items-center justify-center relative">
                   {item.imageUrl ? (
                     <Image
                       src={item.imageUrl}
