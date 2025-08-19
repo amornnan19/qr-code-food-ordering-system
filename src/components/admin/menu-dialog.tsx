@@ -97,7 +97,7 @@ export function MenuDialog({
         const data = await response.json();
         setError(data.error || "Failed to save menu item");
       }
-    } catch (error) {
+    } catch (_error) {
       setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);

@@ -35,7 +35,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
           localStorage.removeItem("adminAuth");
           router.push("/admin/login");
         }
-      } catch (error) {
+      } catch (_error) {
         localStorage.removeItem("adminAuth");
         router.push("/admin/login");
       }

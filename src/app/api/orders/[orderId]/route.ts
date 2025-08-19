@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { $Enums } from "@/generated/prisma";
 
 // GET single order
 export async function GET(

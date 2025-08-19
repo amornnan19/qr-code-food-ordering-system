@@ -67,8 +67,8 @@ export function RestaurantSetupDialog({
         <DialogHeader>
           <DialogTitle>Setup Your Restaurant</DialogTitle>
           <DialogDescription>
-            First, let's set up your restaurant information. This will be used
-            throughout the system.
+            First, let&apos;s set up your restaurant information. This will be
+            used throughout the system.
           </DialogDescription>
         </DialogHeader>
 

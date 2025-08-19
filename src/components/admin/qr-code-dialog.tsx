@@ -49,8 +49,8 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
         const error = await response.json();
         console.error("QR generation error:", error);
       }
-    } catch (error) {
-      console.error("Failed to generate QR code:", error);
+    } catch (_error) {
+      console.error("Failed to generate QR code:", _error);
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +79,7 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
           text: `Scan this QR code to order from Table ${table.tableNumber}`,
           url: tableUrl,
         });
-      } catch (error) {
+      } catch (_error) {
         // Fallback to copying URL
         copyURL();
       }

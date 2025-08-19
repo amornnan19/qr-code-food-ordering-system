@@ -15,9 +15,9 @@ interface HeaderProps {
 
 export function Header({ restaurant, tableNumber }: HeaderProps) {
   const pathname = usePathname();
-  const tableId = pathname.split('/')[2]; // Extract tableId from /table/[tableId]/...
+  const tableId = pathname.split("/")[2]; // Extract tableId from /table/[tableId]/...
 
-  const isTablePage = pathname.includes('/table/') && tableId;
+  const isTablePage = pathname.includes("/table/") && tableId;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

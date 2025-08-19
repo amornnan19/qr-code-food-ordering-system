@@ -42,7 +42,7 @@ export default function AdminMenuPage() {
       const response = await fetch("/api/admin/restaurants", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      
+
       if (response.ok) {
         const restaurant = await response.json();
         if (!restaurant) {

@@ -146,7 +146,9 @@ export function CartProvider({ children }: CartProviderProps) {
 
         // Create separate orders for each customer
         const orders = [];
-        for (const [customerName, customerItems] of Object.entries(customerGroups)) {
+        for (const [customerName, customerItems] of Object.entries(
+          customerGroups,
+        )) {
           const items = customerItems.map((item) => ({
             menuId: item.menuId,
             quantity: item.quantity,
@@ -159,7 +161,8 @@ export function CartProvider({ children }: CartProviderProps) {
             body: JSON.stringify({
               restaurantId,
               tableId,
-              customerName: customerName === "ไม่ระบุชื่อ" ? null : customerName,
+              customerName:
+                customerName === "ไม่ระบุชื่อ" ? null : customerName,
               items,
             }),
           });

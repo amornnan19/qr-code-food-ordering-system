@@ -34,19 +34,19 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const params = new URLSearchParams({ 
+        const params = new URLSearchParams({
           restaurantId,
           tableId,
-          status: 'SERVED' // Only get served orders for bill calculation
+          status: "SERVED", // Only get served orders for bill calculation
         });
         const response = await fetch(`/api/orders?${params}`);
-        
+
         if (response.ok) {
           const data = await response.json();
           setOrders(data.orders);
         }
       } catch (error) {
-        console.error('Failed to fetch orders:', error);
+        console.error("Failed to fetch orders:", error);
       } finally {
         setIsLoading(false);
       }
@@ -68,7 +68,9 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
     return (
       <div className="text-center py-8 text-muted-foreground">
         <p>ไม่มีรายการอาหารที่เสิร์ฟแล้ว</p>
-        <p className="text-sm mt-2">เมื่อมีการเสิร์ฟอาหารแล้ว บิลจะแสดงที่นี่</p>
+        <p className="text-sm mt-2">
+          เมื่อมีการเสิร์ฟอาหารแล้ว บิลจะแสดงที่นี่
+        </p>
       </div>
     );
   }
@@ -77,8 +79,8 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
   const customerGroups: Record<string, OrderWithItems[]> = {};
   let totalAmount = 0;
 
-  orders.forEach(order => {
-    const customerName = order.customerName || 'ไม่ระบุชื่อ';
+  orders.forEach((order) => {
+    const customerName = order.customerName || "ไม่ระบุชื่อ";
     if (!customerGroups[customerName]) {
       customerGroups[customerName] = [];
     }
@@ -165,9 +167,12 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {customerOrders.map((order) => 
+                  {customerOrders.map((order) =>
                     order.orderItems.map((item) => (
-                      <div key={`${order.id}-${item.id}`} className="flex justify-between text-sm">
+                      <div
+                        key={`${order.id}-${item.id}`}
+                        className="flex justify-between text-sm"
+                      >
                         <span>
                           {item.menu.name} x{item.quantity}
                         </span>
@@ -175,7 +180,7 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
                           ฿{(item.quantity * Number(item.price)).toFixed(2)}
                         </span>
                       </div>
-                    ))
+                    )),
                   )}
                 </CardContent>
               </Card>

@@ -66,7 +66,7 @@ export function CartSummary({
       } else {
         alert(`Failed to submit order: ${result.error}`);
       }
-    } catch (error) {
+    } catch (_error) {
       alert("An unexpected error occurred");
     } finally {
       setIsSubmitting(false);
