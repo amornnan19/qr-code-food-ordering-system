@@ -89,7 +89,7 @@ export default function AdminMenuPage() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const filteredMenuItems = menuItems.filter((item) => {
     const matchesSearch =
