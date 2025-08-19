@@ -79,7 +79,7 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
           text: `Scan this QR code to order from Table ${table.tableNumber}`,
           url: tableUrl,
         });
-      } catch (_error) {
+      } catch {
         // Fallback to copying URL
         copyURL();
       }

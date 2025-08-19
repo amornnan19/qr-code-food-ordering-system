@@ -147,7 +147,7 @@ ${Object.keys(cartSummary.customerGroups)
           title: `ใบเสร็จ - ${restaurant.name}`,
           text: content,
         });
-      } catch (_error) {
+      } catch {
         // Fallback to copying to clipboard
         copyToClipboard(content);
       }

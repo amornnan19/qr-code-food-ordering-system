@@ -98,6 +98,7 @@ export function MenuDialog({
         setError(data.error || "Failed to save menu item");
       }
     } catch (_error) {
+      console.error("Submit error:", _error);
       setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);

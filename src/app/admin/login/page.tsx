@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
       } else {
         setError(data.error || "Login failed");
       }
-    } catch (_error) {
+    } catch {
       setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);

@@ -76,6 +76,7 @@ export function TableDialog({ open, onClose, editingTable }: TableDialogProps) {
         setError(data.error || "Failed to save table");
       }
     } catch (_error) {
+      console.error("Submit error:", _error);
       setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);
