@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { MainLayout } from "@/components/layout/main-layout";
 import { OrdersList } from "@/components/orders/orders-list";
+import { TableSessionWrapper } from "@/components/table/table-session-wrapper";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -31,7 +32,8 @@ export default async function TableOrdersPage({
   }
 
   return (
-    <MainLayout restaurant={table.restaurant} tableNumber={table.tableNumber}>
+    <TableSessionWrapper>
+      <MainLayout restaurant={table.restaurant} tableNumber={table.tableNumber}>
       <div className="space-y-6">
         <div className="flex items-center space-x-4">
           <Button asChild variant="outline" size="sm">
@@ -47,7 +49,8 @@ export default async function TableOrdersPage({
           tableId={tableId}
           showControls={false} // Customers can't control status
         />
-      </div>
-    </MainLayout>
+        </div>
+      </MainLayout>
+    </TableSessionWrapper>
   );
 }

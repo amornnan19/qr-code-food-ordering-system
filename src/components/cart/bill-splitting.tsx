@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { OrderWithItems } from "@/types/database";
+import { useSession } from "@/components/table/table-session-wrapper";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,7 @@ interface BillSplittingProps {
 
 export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
+  const { sessionId } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [adjustments, setAdjustments] = useState<Record<string, number>>({});
   const [splitMethod, setSplitMethod] = useState<"auto" | "manual" | "equal">(
@@ -39,6 +41,7 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
           tableId,
           status: "SERVED", // Only get served orders for bill calculation
         });
+        if (sessionId) params.append("sessionId", sessionId);
         const response = await fetch(`/api/orders?${params}`);
 
         if (response.ok) {
@@ -53,7 +56,7 @@ export function BillSplitting({ restaurantId, tableId }: BillSplittingProps) {
     };
 
     fetchOrders();
-  }, [restaurantId, tableId]);
+  }, [restaurantId, tableId, sessionId]);
 
   if (isLoading) {
     return (

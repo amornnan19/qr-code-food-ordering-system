@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { MainLayout } from "@/components/layout/main-layout";
 import { CartProvider } from "@/context/cart-context";
+import { TableSessionWrapper } from "@/components/table/table-session-wrapper";
 import { BillSplitting } from "@/components/cart/bill-splitting";
 import { ReceiptGenerator } from "@/components/cart/receipt-generator";
 import Link from "next/link";
@@ -32,8 +33,9 @@ export default async function TableBillPage({ params }: TableBillPageProps) {
   }
 
   return (
-    <CartProvider>
-      <MainLayout restaurant={table.restaurant} tableNumber={table.tableNumber}>
+    <TableSessionWrapper>
+      <CartProvider>
+        <MainLayout restaurant={table.restaurant} tableNumber={table.tableNumber}>
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <Button asChild variant="outline" size="sm">
@@ -60,8 +62,9 @@ export default async function TableBillPage({ params }: TableBillPageProps) {
           <Separator />
 
           <ReceiptGenerator restaurant={table.restaurant} table={table} />
-        </div>
-      </MainLayout>
-    </CartProvider>
+          </div>
+        </MainLayout>
+      </CartProvider>
+    </TableSessionWrapper>
   );
 }

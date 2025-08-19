@@ -8,6 +8,7 @@ import {
   ReactNode,
 } from "react";
 import { CartItem, CartSummary, CartContextType } from "@/types/cart";
+import { useSession } from "@/components/table/table-session-wrapper";
 import { Menu } from "@/types/database";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -18,6 +19,7 @@ interface CartProviderProps {
 
 export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const { sessionId } = useSession();
 
   const addToCart = useCallback(
     (menu: Menu, quantity: number, customerName: string, notes?: string) => {
@@ -164,6 +166,7 @@ export function CartProvider({ children }: CartProviderProps) {
               customerName:
                 customerName === "ไม่ระบุชื่อ" ? null : customerName,
               items,
+              sessionId,
             }),
           });
 
@@ -188,7 +191,7 @@ export function CartProvider({ children }: CartProviderProps) {
         return { success: false, error: "Network error" };
       }
     },
-    [cart, clearCart],
+    [cart, clearCart, sessionId],
   );
 
   const value: CartContextType = {

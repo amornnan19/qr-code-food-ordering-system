@@ -5,7 +5,7 @@ import { $Enums } from "@/generated/prisma";
 // POST - Create new order
 export async function POST(request: NextRequest) {
   try {
-    const { restaurantId, tableId, customerName, items } = await request.json();
+    const { restaurantId, tableId, customerName, items, sessionId } = await request.json();
 
     if (!restaurantId || !tableId || !items || items.length === 0) {
       return NextResponse.json(
@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
       data: {
         restaurantId,
         tableId,
+        sessionId: sessionId || null,
         orderNumber,
         totalAmount,
         customerName: customerName || null,
@@ -91,16 +92,19 @@ export async function GET(request: NextRequest) {
     const restaurantId = searchParams.get("restaurantId");
     const tableId = searchParams.get("tableId");
     const status = searchParams.get("status");
+    const sessionId = searchParams.get("sessionId");
 
     const whereClause: {
       restaurantId?: string;
       tableId?: string;
       status?: $Enums.OrderStatus;
+      sessionId?: string | null;
     } = {};
 
     if (restaurantId) whereClause.restaurantId = restaurantId;
     if (tableId) whereClause.tableId = tableId;
     if (status) whereClause.status = status as $Enums.OrderStatus;
+    if (sessionId) whereClause.sessionId = sessionId;
 
     const orders = await prisma.order.findMany({
       where: whereClause,

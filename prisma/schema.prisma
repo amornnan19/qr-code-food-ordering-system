@@ -38,14 +38,15 @@ model Restaurant {
 
 // Table Model
 model Table {
-  id           String  @id @default(cuid())
-  restaurantId String
-  tableNumber  String
-  qrCode       String  @unique
-  seats        Int     @default(4)
-  location     String?
-  notes        String?
-  isActive     Boolean @default(true)
+  id               String  @id @default(cuid())
+  restaurantId     String
+  tableNumber      String
+  qrCode           String  @unique
+  currentSessionId String? // Current active session ID
+  seats            Int     @default(4)
+  location         String?
+  notes            String?
+  isActive         Boolean @default(true)
   
   // Relations
   restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
@@ -100,6 +101,7 @@ model Order {
   id           String      @id @default(cuid())
   restaurantId String
   tableId      String
+  sessionId    String?     // Table session ID for isolating orders
   orderNumber  String      @unique
   status       OrderStatus @default(PENDING)
   totalAmount  Decimal     @db.Decimal(10, 2)

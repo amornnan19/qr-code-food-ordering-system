@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { OrderWithItems } from "@/types/database";
 import { $Enums } from "@/generated/prisma";
+import { useSession } from "@/components/table/table-session-wrapper";
 
 type OrderStatus = $Enums.OrderStatus;
 import { OrderCard } from "./order-card";
@@ -29,6 +30,8 @@ export function OrdersList({
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("all");
 
+  const { sessionId } = useSession();
+  
   const fetchOrders = async () => {
     setLoading(true);
     setError(null);
@@ -36,6 +39,7 @@ export function OrdersList({
     try {
       const params = new URLSearchParams({ restaurantId });
       if (tableId) params.append("tableId", tableId);
+      if (sessionId) params.append("sessionId", sessionId);
 
       const response = await fetch(`/api/orders?${params}`);
 

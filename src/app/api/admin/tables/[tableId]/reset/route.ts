@@ -64,15 +64,18 @@ export async function POST(
       });
     }
 
-    // Generate new QR code URL with timestamp for uniqueness
+    // Generate new session ID and QR code URL
     const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
-    const timestamp = Date.now();
-    const newQrUrl = `${baseUrl}/table/${tableId}?session=${timestamp}`;
+    const newSessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+    const newQrUrl = `${baseUrl}/table/${tableId}?session=${newSessionId}`;
 
-    // Update table with new QR code
+    // Update table with new QR code and current session
     const updatedTable = await prisma.table.update({
       where: { id: tableId },
-      data: { qrCode: newQrUrl },
+      data: { 
+        qrCode: newQrUrl,
+        currentSessionId: newSessionId
+      },
       include: {
         restaurant: true,
         _count: {
