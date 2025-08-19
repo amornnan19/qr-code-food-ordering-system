@@ -1,6 +1,7 @@
 "use client";
 
 import { MenuWithCategory } from "@/types/database";
+import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -30,9 +31,11 @@ export function MenuItemCard({ menu }: MenuItemCardProps) {
             )}
           </div>
           {menu.imageUrl && (
-            <img
+            <Image
               src={menu.imageUrl}
               alt={menu.name}
+              width={64}
+              height={64}
               className="w-16 h-16 rounded-lg object-cover ml-4"
             />
           )}

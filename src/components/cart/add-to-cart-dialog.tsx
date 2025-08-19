@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { MenuWithCategory } from "@/types/database";
 import { useCart } from "@/context/cart-context";
 import {
@@ -63,9 +64,11 @@ export function AddToCartDialog({ menu, children }: AddToCartDialogProps) {
           <DialogTitle className="flex items-center justify-between">
             Add to Cart
             {menu.imageUrl && (
-              <img
+              <Image
                 src={menu.imageUrl}
                 alt={menu.name}
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-lg object-cover"
               />
             )}

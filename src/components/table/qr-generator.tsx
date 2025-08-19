@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -104,9 +105,11 @@ export function QRGenerator({ table, restaurantName }: QRGeneratorProps) {
         {qrCodeUrl && (
           <div className="space-y-3 text-center">
             <div className="flex justify-center">
-              <img
+              <Image
                 src={qrCodeUrl}
                 alt={`QR Code for Table ${table.tableNumber}`}
+                width={256}
+                height={256}
                 className="border rounded-lg"
               />
             </div>

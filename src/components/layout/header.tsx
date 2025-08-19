@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Restaurant } from "@/types/database";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -55,9 +56,11 @@ export function Header({ restaurant, tableNumber }: HeaderProps) {
           )}
 
           {restaurant?.logoUrl && (
-            <img
+            <Image
               src={restaurant.logoUrl}
               alt={restaurant.name}
+              width={32}
+              height={32}
               className="h-8 w-8 rounded-full object-cover"
             />
           )}

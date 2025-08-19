@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -192,9 +193,11 @@ export function MenuDialog({
             />
             {formData.imageUrl && (
               <div className="mt-2">
-                <img
+                <Image
                   src={formData.imageUrl}
                   alt="Preview"
+                  width={128}
+                  height={128}
                   className="w-32 h-32 object-cover rounded border"
                   onError={(e) => {
                     e.currentTarget.style.display = "none";

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { AuthGuard } from "@/components/admin/auth-guard";
 import { AdminLayout } from "@/components/admin/admin-layout";
 import { Button } from "@/components/ui/button";
@@ -218,10 +219,11 @@ export default function AdminMenuPage() {
               <Card key={item.id} className="overflow-hidden">
                 <div className="aspect-video bg-gray-100 flex items-center justify-center">
                   {item.imageUrl ? (
-                    <img
+                    <Image
                       src={item.imageUrl}
                       alt={item.name}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
                     />
                   ) : (
                     <ImageIcon className="h-12 w-12 text-gray-400" />

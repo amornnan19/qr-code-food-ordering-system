@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -136,9 +137,11 @@ export function QRCodeDialog({ table, open, onClose }: QRCodeDialogProps) {
                   </p>
                 </div>
               ) : qrCodeUrl ? (
-                <img
+                <Image
                   src={qrCodeUrl}
                   alt={`QR Code for Table ${table.tableNumber}`}
+                  width={256}
+                  height={256}
                   className="w-64 h-64"
                 />
               ) : (
